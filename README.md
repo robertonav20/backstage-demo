@@ -19,6 +19,8 @@ docker-compose up -d
 ```
 
 ```sh
+sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80
+
 cat <<EOF | kind create cluster --config -
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -44,9 +46,67 @@ nodes:
 EOF
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-```
 
-```sh
+cat <<EOF | kubectl apply -f -
+kind: Pod
+apiVersion: v1
+metadata:
+  name: foo-app
+  labels:
+    app: foo
+spec:
+  containers:
+  - command:
+    - /agnhost
+    - netexec
+    - --http-port
+    - "8080"
+    image: registry.k8s.io/e2e-test-images/agnhost:2.39
+    name: foo-app
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: foo-service
+  labels:
+    app: foo
+spec:
+  selector:
+    app: foo
+  ports:
+  # Default port used by the image
+  - port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+  labels:
+    app: foo
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /foo(/|$)(.*)
+        backend:
+          service:
+            name: foo-service
+            port:
+              number: 8080
+      - pathType: Prefix
+        path: /bar(/|$)(.*)
+        backend:
+          service:
+            name: bar-service
+            port:
+              number: 8080
+EOF
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+
 kubectl create serviceaccount backstage-service-account
 
 cat <<EOF | kubectl apply -f -
@@ -79,4 +139,5 @@ kubectl get secret backstage-secret -o jsonpath='{.data.token}' | base64 --decod
 
 CA CRT version
 kubectl get secret backstage-secret -o jsonpath='{.data.ca\.crt}'
+
 ```

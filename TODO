@@ -1,0 +1,7 @@
+script kubernetes per creare cluster, secret account, ingress e deployment
+configurare app-config.yaml con variabile d'ambiente come gitlab token, kubernetes token ecc...
+
+creazione script per gitlab e jenkins
+
+sistemare i warning
+aggiungere tracce jaeger a backstage

@@ -56,7 +56,6 @@ import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 
 import {
   EntityKubernetesContent,
-  isKubernetesAvailable,
 } from '@backstage/plugin-kubernetes';
 
 import {
@@ -207,7 +206,6 @@ const websiteEntityPage = (
     <EntityLayout.Route
       path="/kubernetes"
       title="Kubernetes"
-      if={isKubernetesAvailable}
     >
       <EntityKubernetesContent />
     </EntityLayout.Route>

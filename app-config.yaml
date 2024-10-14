@@ -1,0 +1,197 @@
+app:
+  title: Backstage Demo
+  baseUrl: http://localhost:3000
+  support:
+    url: https://github.com/backstage/backstage/issues
+    items:
+      - title: Backstage Community
+        icon: chat
+        links:
+          - url: https://backstage.io/docs/overview/support
+            title: Support and community
+      - title: Backstage News
+        icon: docs
+        links:
+          - url: https://backstage.io/blog/
+            title: Backstage Blog
+
+organization:
+  name: Backstage
+
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+  csp:
+    connect-src: ["'self'", "http:", "https:"]
+    img-src:
+      [
+        "'self'",
+        "data:",
+        "https://backstage.io",
+        "https://img.shields.io/",
+        "https://api.dicebear.com/",
+        "https://kroki.io/",
+        "https://www.bestpractices.dev/",
+        "https://api.securityscorecards.dev",
+      ]
+    frame-src: ["https://www.youtube.com"]
+  cors:
+    origin: http://localhost:3000
+    methods: [GET, POST, PUT, DELETE]
+    credentials: true
+  database:
+    client: better-sqlite3
+    connection: ":memory:"
+  reading:
+    allow:
+      - host: demo.backstage.io
+        paths:
+          - /api/graphql/schema
+
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+  gitlab:
+    - host: localhost:8090
+      token: glpat-R8gChPZ8bJFQytweLzG7
+      baseUrl: http://localhost:8090/
+      apiBaseUrl: http://localhost:8090/api/v4
+
+auth:
+  environment: development
+  providers:
+    guest:
+      userEntityRef: user:default/guest
+    github:
+      development:
+        clientId: ${GITHUB_DEVELOPMENT_CLIENT_ID}
+        clientSecret: ${GITHUB_DEVELOPMENT_CLIENT_SECRET}
+
+catalog:
+  readonly: true
+  rules:
+    - allow: [Component, API, System, Domain, Resource, Location, User, Group]
+  locations:
+    # Backstage example components
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-components.yaml
+
+    # Backstage example systems
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-systems.yaml
+
+    # Backstage example APIs
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-apis.yaml
+
+    # Backstage example organization groups
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
+
+    # Backstage example domains
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-domains.yaml
+
+    # Backstage example resources
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-resources.yaml
+
+    # The backstage demo deployment (this)
+    - type: url
+      target: https://github.com/backstage/demo/blob/master/catalog-info.yaml
+
+    # The backstage library repository
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/catalog-info.yaml
+
+    # Kubernetes demo component
+    - type: url
+      target: https://github.com/mclarke47/dice-roller/blob/master/catalog-info.yaml
+
+    # Demo Software Template
+    - type: file
+      target: ../../catalog-info.yaml
+
+    # Demo Software Template
+    - type: file
+      target: ../../examples/static-site/template.yaml
+      rules:
+        - allow: [Template]
+
+  providers:
+    backstage:
+      enabled: false
+      schedule:
+        frequency: { hours: 12 }
+        timeout: { minutes: 30 }
+
+costInsights:
+  engineerCost: 200000
+  products:
+    computeEngine:
+      name: Compute Engine
+      icon: compute
+    cloudStorage:
+      name: Cloud Storage
+      icon: storage
+    bigQuery:
+      name: BigQuery
+      icon: search
+  metrics:
+    DAU:
+      name: Daily Active Users
+      default: true
+    MSC:
+      name: Monthly Subscribers
+
+techdocs:
+  sanitizer:
+    allowedIframeHosts:
+      - www.youtube.com
+  builder: "external"
+  generator:
+    runIn: "local"
+  publisher:
+    type: "local"
+
+kubernetes:
+  serviceLocatorMethod:
+    type: "multiTenant"
+  clusterLocatorMethods:
+    - type: "config"
+      clusters:
+        - url: https://localhost:6443
+          name: kind-backstage-cluster
+          authProvider: serviceAccount
+          skipTLSVerify: true
+          skipMetricsLookup: true
+          caData: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJTFlzOXFXM2V0dlF3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRFd01UUXhOREUzTkRaYUZ3MHpOREV3TVRJeE5ESXlORFphTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUMxSzl1bnpmUHRzRkhXeDk0WXNSYlpmNEdrcjUwelVYTEMya0pnam5LZ3F5S3BVZ051RHkyWlo5ZGUKZ3kyT3JQOG5SdkZJSWxLdzE2eFl4M05MQ05EeVYzYUhNT3dFU0djOTFCKzBNU2RFZy95WFIwMjhmc2gvK1FOZgpmR1R1c2FSSVozL09RT3ZQWVlDK1FQdVk2ZkRmT0hiSlhURTBob2xwTWxnSDZxQit2NFUyc3hLeUt3aFZLUy9lCnU0dENCaUxpM2tDdFlLQnlWU29QcnlBajZvVnhYU1JMWTJQcTAydzl3bUt6cWJJODR5bDJOV2xHcjVremY0Mm0KZjl5Znd2YVg1dFlibnNLK2xsUE0zbVBsU0pEcUFnZWJ4T3VwK1BWWjZYQmkzN2dQUDhXNktzT25TSVFIWUpmeQpjVU1Xc2pCcEIwNk5NSHJvTnRZd3kxVWJmNmRiQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSdCswNXoyV0QxakpUTGZjM2tFMlJISmtGL3ZEQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQkNQVVFCenZRbgp1dlowc0xkQ202RE1yWmlVMDl0RTNEbWg0MTFJbWR5NVIwZ2xzc3d4UHZoaHp2RHJrTzN6eTV0U1hpdDMrZlNTClZPbEJ4YWh0UEJBdXR3SnFEaGRlQ24wQWEvdXBjNVlXMEtCb3lpU3FQWmw5NTNqOVVoODJKWVNpZjhNcmVTbEQKaUF2RGdnNlFvd3k5emVEejFoWmhNOVhWZnNkbVJ0WHJ6dFVDcUFlTituemk2ak1rN1NOZzZoUGdSOGROZzR1ZApDTzlsdjByT1JHQUNzekdwN2JwbWgzVXBlZmNWSEZBMVdFMDE2aWFPN29FMmdSY1VNRkh1dm1yYWJQc2xoZjV3Cm9tRE44ZUhtczYzRWZ5YkJrbzg0T2FwdkV6YmxESEhKK1h6RG0xRHBMU1VyZFVsd1Bta1QvN1ppYitmT1BKK3cKYnFwb2hpSzRXcTV6Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+          serviceAccountToken: eyJhbGciOiJSUzI1NiIsImtpZCI6InM1MVN5UUVQb3ZOdktJN2xZdTVBVHpsLXJFazdLUGVZS0RlM2RabXV1N2MifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImJhY2tzdGFnZS1zZWNyZXQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiYmFja3N0YWdlLXNlcnZpY2UtYWNjb3VudCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjJlY2EzYmFkLWU4NjYtNDFiYy1hZDQxLTJlYTQwNzMyZjNjMSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmJhY2tzdGFnZS1zZXJ2aWNlLWFjY291bnQifQ.TdrRxtQYDD1v9WRxGp9bNTJS7_yafPdt2zLiAXqLt8sjuIm8VRJz45guxrZGN4K8q45qNevLi5PQZO8ZXDbKpi4uwwZebjkW-WtU2xV559JVaGiX-CzTK93a5joj-jZNLRNQ_I6yfGp8jU-HvDEcVAJZTCIdb2QIe4z1NbrbfNH0iC_XE1azGdsxAGaBs6Nk0zPSXbz4b0_sEB5giqbAlPBVB8oGg0r8HpCRk9lZZRXX_edE1uniUOC1946t2M35JJWKLWGE4li_xLi8RnhIgvm4AF0z91O8JcWiJ5tkb25XeeOIPkTMCAEVkzcwrrSA0Bsb9Wp_dETIdOkTbU5PLA
+
+explore:
+  tools:
+    - title: "Tech Radar"
+      description: "Tech Radar is a list of technologies, complemented by an assessment result, called ring assignment."
+      url: "/tech-radar"
+      image: "/tech-radar.png"
+      tags: ["standards", "landscape"]
+    - title: "Cost Insights"
+      description: "Insights into cloud costs for your organization."
+      url: "/cost-insights"
+      image: "/google-cloud.png"
+      tags: ["cloud", "finops"]
+    - title: "GraphiQL"
+      description: "Integrates GraphiQL as a tool to browse GraphiQL endpoints inside Backstage."
+      url: "/graphiql"
+      image: "/graphiql.png"
+      tags: ["graphql", "dev"]
+
+proxy:
+  endpoints:
+    "/jenkins/api":
+      target: "http://localhost:8080"
+      changeOrigin: true
+      headers:
+        Authorization: Basic YmFja3N0YWdlOmJhY2tzdGFnZQ==

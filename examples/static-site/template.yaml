@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://json.schemastore.org/yamllint.json
+
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: demo-template
+  title: Demo Template
+  description: |
+    **tl;dr;** This demo template will ask some basic questions, create a GitHub repository, populate it with a landing page, enable GitHub Pages, 
+    and trigger a GitHub Action to deploy the landing page to GitHub Pages. The contents of the landing page 
+    are driven by the answers provided at the beginning of the template.
+    **Details what this template will do**:
+spec:
+  owner: backstage/maintainers
+  type: website
+  parameters:
+    - title: Choose a location
+      description: |
+        This section will ask for details about the Owner and Repository name which will then be used 
+        to create a repository in that location using your GitHub credentials.
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Enter an Owner and Repository Name
+          description: |
+            The Owner should be your GitHub username. The Repository name should be a name that is not one that exists already in your GitHub account.
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - localhost:8090
+  steps:
+    - id: list-inputs
+      name: List Inputs
+      action: debug:log
+      input:
+        message: |
+          The following inputs were pre-selected:
+            - Repo URL: ${{ parameters.repoUrl }}
+            - Owner: ${{ (parameters.repoUrl | parseRepoUrl).owner }}
+            - Repo: ${{ (parameters.repoUrl | parseRepoUrl).repo }}
+    - id: fetch-skeleton
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          name: ${{parameters.name}}
+          owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
+          repo: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+    - id: publish
+      name: Publish
+      action: publish:gitlab
+      input:
+        allowedHosts: ['localhost:8090']
+        repoUrl: ${{ parameters.repoUrl }}
+        repoVisibility: public
+        defaultBranch: main
+        description: Repository Created by Demo template
+  output:
+    links:
+      - url: https://localhost:8090/${{ parameters.repoUrl }}
+        title: 'Github Repository'
+    text:
+      - title: Reminder to Delete Repository
+        content: |
+          **Note:** You will need to manually delete the resulting repository once you are done.

@@ -57,4 +57,5 @@ backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 // gitlab
 backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
 
+backend.add(import('scaffolder-backend-module-jenkins-actions'));
 backend.start();

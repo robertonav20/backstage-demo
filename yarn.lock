@@ -3134,6 +3134,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@backstage/backend-plugin-api@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@backstage/backend-plugin-api@npm:1.0.1"
+  dependencies:
+    "@backstage/cli-common": "npm:^0.1.14"
+    "@backstage/config": "npm:^1.2.0"
+    "@backstage/errors": "npm:^1.2.4"
+    "@backstage/plugin-auth-node": "npm:^0.5.3"
+    "@backstage/plugin-permission-common": "npm:^0.8.1"
+    "@backstage/types": "npm:^1.1.1"
+    "@types/express": "npm:^4.17.6"
+    "@types/luxon": "npm:^3.0.0"
+    express: "npm:^4.17.1"
+    knex: "npm:^3.0.0"
+    luxon: "npm:^3.0.0"
+  checksum: 10c0/780c475776725598e8152f24ab2d5b66e52311160ae63411deff43453d8543d72528826569b177c3ea5c7362ae148057928c31b5de36e058454ae222edb2ab1d
+  languageName: node
+  linkType: hard
+
 "@backstage/catalog-client@npm:^1.6.6, @backstage/catalog-client@npm:^1.7.0":
   version: 1.7.0
   resolution: "@backstage/catalog-client@npm:1.7.0"
@@ -3143,6 +3162,18 @@ __metadata:
     cross-fetch: "npm:^4.0.0"
     uri-template: "npm:^2.0.0"
   checksum: 10c0/2d65395965a1274f36f0ff943a6e4599221014a0aa6a65e82555e7ea94e55ed65d96cdcc2b490d8edf30af5145b45aad10d1d11d83f19026d0dc0ee8e8dedb8c
+  languageName: node
+  linkType: hard
+
+"@backstage/catalog-client@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "@backstage/catalog-client@npm:1.7.1"
+  dependencies:
+    "@backstage/catalog-model": "npm:^1.7.0"
+    "@backstage/errors": "npm:^1.2.4"
+    cross-fetch: "npm:^4.0.0"
+    uri-template: "npm:^2.0.0"
+  checksum: 10c0/975dd9b467c47fba29209608f79db68e48ae000ed07a42acb5de49cabdfc2924be9394e8ccc597c30a62215ab6d2c84c5c45c68c69617a5429e2192bc4dc6baa
   languageName: node
   linkType: hard
 
@@ -4051,6 +4082,32 @@ __metadata:
     zod: "npm:^3.22.4"
     zod-to-json-schema: "npm:^3.21.4"
   checksum: 10c0/91c8517a331143e2621c7c16d6d023f9e1681004a85fda2db6d0de4389da995472bb9e5bb0647d6e628ee8d3271b4449db06463a0ceaaeda52eab4ce0862af7e
+  languageName: node
+  linkType: hard
+
+"@backstage/plugin-auth-node@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@backstage/plugin-auth-node@npm:0.5.3"
+  dependencies:
+    "@backstage/backend-common": "npm:^0.25.0"
+    "@backstage/backend-plugin-api": "npm:^1.0.1"
+    "@backstage/catalog-client": "npm:^1.7.1"
+    "@backstage/catalog-model": "npm:^1.7.0"
+    "@backstage/config": "npm:^1.2.0"
+    "@backstage/errors": "npm:^1.2.4"
+    "@backstage/types": "npm:^1.1.1"
+    "@types/express": "npm:*"
+    "@types/passport": "npm:^1.0.3"
+    express: "npm:^4.17.1"
+    jose: "npm:^5.0.0"
+    lodash: "npm:^4.17.21"
+    node-fetch: "npm:^2.7.0"
+    passport: "npm:^0.7.0"
+    winston: "npm:^3.2.1"
+    zod: "npm:^3.22.4"
+    zod-to-json-schema: "npm:^3.21.4"
+    zod-validation-error: "npm:^3.4.0"
+  checksum: 10c0/39fa2db23c11588a7f3d0d407e09fa0fde4fce066b41c82b14611f08ea84dde43c416f8835e1e2ff1b0823de60dbf471dd3fd31ff414a19aecf6a82d4be23f2b
   languageName: node
   linkType: hard
 
@@ -11874,6 +11931,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jenkins@npm:^1":
+  version: 1.0.2
+  resolution: "@types/jenkins@npm:1.0.2"
+  dependencies:
+    "@types/node": "npm:*"
+    form-data: "npm:^4.0.0"
+  checksum: 10c0/f702375d6596f9c654bab40177e4f9275624313ea881642c4a38b6cf94e5edbae0e2e33541f5fdbbc969458e48b28c3af32b4853426d9daf7f1d59f0d6a68ff7
+  languageName: node
+  linkType: hard
+
 "@types/jest@npm:^29.5.11":
   version: 29.5.13
   resolution: "@types/jest@npm:29.5.13"
@@ -13928,6 +13995,7 @@ __metadata:
     better-sqlite3: "npm:^9.0.0"
     node-gyp: "npm:^10.0.0"
     pg: "npm:^8.11.3"
+    scaffolder-backend-module-jenkins-actions: "npm:^0.1.0"
     winston: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
@@ -20694,7 +20762,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jenkins@npm:^1.0.0":
+"jenkins@npm:^1.0.0, jenkins@npm:^1.1.0":
   version: 1.1.0
   resolution: "jenkins@npm:1.1.0"
   dependencies:
@@ -27601,6 +27669,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"scaffolder-backend-module-jenkins-actions@npm:^0.1.0, scaffolder-backend-module-jenkins-actions@workspace:plugins/scaffolder-backend-module-jenkins-actions":
+  version: 0.0.0-use.local
+  resolution: "scaffolder-backend-module-jenkins-actions@workspace:plugins/scaffolder-backend-module-jenkins-actions"
+  dependencies:
+    "@backstage/backend-plugin-api": "npm:^1.0.1"
+    "@backstage/cli": "npm:^0.27.1"
+    "@backstage/plugin-scaffolder-node": "npm:^0.4.11"
+    "@types/jenkins": "npm:^1"
+    jenkins: "npm:^1.1.0"
+  languageName: unknown
+  linkType: soft
+
 "scheduler@npm:^0.23.2":
   version: 0.23.2
   resolution: "scheduler@npm:0.23.2"
@@ -31227,6 +31307,15 @@ __metadata:
   peerDependencies:
     zod: ^3.23.3
   checksum: 10c0/bbea65f28dd009e25940c038c73ad3a9bd5aeffd1a217dba7c44e59f3a3fe0476da3f65bbdde9bf4e65009557489e5b625420d9739871ea0c14e80c99968bf41
+  languageName: node
+  linkType: hard
+
+"zod-validation-error@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "zod-validation-error@npm:3.4.0"
+  peerDependencies:
+    zod: ^3.18.0
+  checksum: 10c0/aaadb0e65c834aacb12fa088663d52d9f4224b5fe6958f09b039f4ab74145fda381c8a7d470bfddf7ddd9bbb5fdfbb52739cd66958ce6d388c256a44094d1fba
   languageName: node
   linkType: hard
 

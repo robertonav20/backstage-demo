@@ -52,12 +52,13 @@ export function createJob(jenkins: Jenkins) {
       try {
         const xml = buildCreateJobXml(ctx.input.repoUrl, branch, gitlabCredentials);
 
-        console.log("Trying to create job jenkins with this xml", xml);
+        ctx.logger.info("Trying to create job jenkins with this xml", xml);
 
         await jenkins.job.create(ctx.input.jobName, xml);
-        console.log('Job created successfully!');
+        ctx.logger.info('Job created successfully!');
       } catch (err) {
-        console.error('Error creating job please check');
+        ctx.logger.error('Error creating job please check', err);
+        throw err;
       }
     },
   });

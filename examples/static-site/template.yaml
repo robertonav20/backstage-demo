@@ -3,34 +3,27 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: demo-template
-  title: Demo Template
+  name: static-site-template
+  title: Static Site Template
   description: |
-    This demo template will ask some basic questions, create a GitHub repository, populate it with a landing page, enable GitHub Pages, 
-    and trigger a GitHub Action to deploy the landing page to GitHub Pages. The contents of the landing page 
-    are driven by the answers provided at the beginning of the template.
-    **Details what this template will do**:
+    This template will create a static site repository under owner folder/group and a related job jenkins with under the same folder.
+    You will obtain button links after job execution
 spec:
-  owner: backstage/maintainers
   type: website
   parameters:
     - title: Choose a location
       description: |
-        This section will ask for details about the Owner and Repository name which will then be used 
+        This section will ask for details about the Owner and Repository name which will then be used
         to create a repository in that location using your GitHub credentials.
-      required:
-        - jobName
-        - repoUrl
       properties:
-        jobName:
-          title: Enter a name for jenkins job
-          type: string
         repoUrl:
           title: Enter an Owner and Repository Name
           description: |
             The Owner should be your GitHub username. The Repository name should be a name that is not one that exists already in your GitHub account.
           type: string
+          ui:autofocus: true
           ui:field: RepoUrlPicker
+          default: localhost:8090?owner=backstage-test&repo=static-site
           ui:options:
             allowedHosts:
               - localhost:8090
@@ -65,12 +58,12 @@ spec:
       name: Jenkins Job Create
       action: jenkins:job:create
       input:
-        jobName: ${{ parameters.jobName }}
+        jobName: ${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
         repoUrl: http://gitlab:8090/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}.git
         description: Jenkins job creation
   output:
     links:
-      - url: http://localhost:8090/${{ parameters.owner }}/${{ parameters.repoUrl }}
+      - url: http://localhost:8090/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
         title: "Github Repository"
-      - url: htts://localhost:8080/job/${{ parameters.jobName }}
+      - url: http://localhost:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ (parameters.repoUrl | parseRepoUrl).repo }}
         title: "Jenkins Job"

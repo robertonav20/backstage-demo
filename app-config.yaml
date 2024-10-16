@@ -134,10 +134,9 @@ techdocs:
     type: "local"
 
 jenkins:
-  hostname: localhost
-  port: "8080"
-  username: backstage
-  apiKey: backstage
+  baseUrl: http://localhost:8080
+  headers:
+    Authorization: Basic YmFja3N0YWdlOmJhY2tzdGFnZQ==
 
 kubernetes:
   serviceLocatorMethod:

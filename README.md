@@ -21,6 +21,26 @@ docker-compose up -d
 ```sh
 sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80
 
+# K3D
+cat <<EOF | ctlptl apply -f -
+apiVersion: ctlptl.dev/v1alpha1
+kind: Registry
+name: k3d-backstage-registry
+port: 5005
+---
+apiVersion: ctlptl.dev/v1alpha1
+kind: Cluster
+name: k3d-backstage-cluster
+product: k3d
+registry: k3d-backstage-registry
+k3d:
+  v1alpha5Simple:
+    kubeAPI:
+      host: localhost
+      hostPort: 6443
+EOF
+
+#KIND
 cat <<EOF | kind create cluster --config -
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4

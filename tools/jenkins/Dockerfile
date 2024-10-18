@@ -1,15 +1,16 @@
 FROM jenkins/jenkins:2.480-jdk17
 
 # Skip the initial setup wizard
-ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false -Djenkins.install.SetupWizard.adminInitialApiToken=true
 
-# Install Jenkins plugins for Kubernetes, GitLab, Docker, and Podman
+# Install Jenkins plugins for Kubernetes, GitLab, Docker
 RUN jenkins-plugin-cli --plugins \
     kubernetes:4292.v11898cf8fa_66 \
     kubernetes-cli:1.12.1 \
     gitlab-plugin:1.9.4 \
     workflow-aggregator:600.vb_57cdd26fdd7 \
-    docker-workflow:580.vc0c340686b_54
+    docker-workflow:580.vc0c340686b_54 \
+    credentials
 
 # Install packages
 USER root
@@ -40,8 +41,13 @@ RUN curl -LO https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz \
     && mv linux-amd64/helm /usr/local/bin/helm \
     && rm -rf linux-amd64/ helm-v3.6.3-linux-amd64.tar.gz
 
-# Set Docker and Podman binaries in PATH
-ENV PATH=$PATH:/usr/bin/podman:/usr/local/bin/docker
+# Set Docker binaries in PATH
+ENV PATH=$PATH:/usr/local/bin/docker
+
+
+ENV API_KEY=backstage-api-key
+ENV USERNAME=root
+ENV PASSWORD=-rob123-
 
 # Switch back to Jenkins user
 USER jenkins

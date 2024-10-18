@@ -1,0 +1,11 @@
+k8s_yaml('postgres/postgres.yaml')
+k8s_resource('postgres', port_forwards=['5432:5432'])
+
+docker_build('gitlab', 'gitlab')
+k8s_yaml('gitlab/gitlab.yaml')
+k8s_resource('gitlab', port_forwards=['8090:8090', '8443:443', '5050:5050', '2424:2424'], resource_deps=['postgres'])
+
+docker_build('jenkins', 'jenkins')
+k8s_yaml('jenkins/jenkins.yaml')
+k8s_resource('jenkins', port_forwards=['8080:8080'])
+

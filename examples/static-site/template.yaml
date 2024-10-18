@@ -59,6 +59,7 @@ spec:
       action: jenkins:job:create
       input:
         jobName: ${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+        jobType: pipeline
         repoUrl: http://gitlab:8090/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}.git
         description: Jenkins job creation
   output:

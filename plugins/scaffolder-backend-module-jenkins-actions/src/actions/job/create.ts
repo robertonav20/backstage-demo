@@ -1,10 +1,11 @@
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import Jenkins from 'jenkins';
-import { buildCreateJobXml } from './template';
+import { buildCreateJobXml, buildCreatePipelineXml } from './template';
 
 export function createJob(jenkins: Jenkins) {
   return createTemplateAction<{
     jobName: string;
+    jobType: string;
     repoUrl: string;
     branch: string;
     gitlabCredentials: string;
@@ -18,28 +19,34 @@ export function createJob(jenkins: Jenkins) {
         properties: {
           jobName: {
             title: 'Jenkins job name',
-            description: 'This is the name jenkins job',
+            description: 'Name of jenkins item',
             type: 'string',
           },
-          repoUrl: {
-            title: 'Gitlab repo',
-            description: 'This is the name gitlab repo',
+          jobType: {
+            title: 'Jenkins job type',
+            description: 'Type of jenkins item',
             type: 'string',
-          },
-          branch: {
-            title: 'Gitlab branch regex',
-            type: 'string',
+            pattern: '(job|pipeline)',
           },
           gitlabCredentials: {
             title: 'Gitlab credentials Id',
             type: 'string',
           },
+          repoUrl: {
+            title: 'Gitlab repo',
+            description: 'Gitlab repo bind to jenkins item',
+            type: 'string',
+          },
+          branch: {
+            title: 'Gitlab branch regex',
+            type: 'string',
+          }
         },
       },
     },
     async handler(ctx) {
       ctx.logger.info(
-        `Creating jenkins job ${ctx.input.jobName} for repr ${ctx.input.repoUrl}`,
+        `Creating jenkins job ${ctx.input.jobName} with type ${ctx.input.jobType} for repo ${ctx.input.repoUrl}`,
       );
 
       const branch = ctx.input.branch !== null
@@ -50,11 +57,16 @@ export function createJob(jenkins: Jenkins) {
         && ctx.input.gitlabCredentials !== '' ? ctx.input.gitlabCredentials : 'backstage';
 
       try {
-        const xml = buildCreateJobXml(ctx.input.repoUrl, branch, gitlabCredentials);
+        let jobXml = '';
+        if ( ctx.input.jobType === "job") {
+          jobXml = buildCreateJobXml(ctx.input.repoUrl, branch, gitlabCredentials);
+        } else {
+          jobXml = buildCreatePipelineXml(ctx.input.repoUrl, branch, gitlabCredentials);
+        }
 
-        ctx.logger.info("Trying to create job jenkins with this xml", xml);
+        ctx.logger.info("Trying to create job jenkins with this xml", jobXml);
 
-        await jenkins.job.create(ctx.input.jobName, xml);
+        await jenkins.job.create(ctx.input.jobName, jobXml);
         ctx.logger.info('Job created successfully!');
       } catch (err) {
         ctx.logger.error('Error creating job please check', err);

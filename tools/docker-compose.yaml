@@ -1,17 +1,67 @@
 services:
 
-  gitlab:
-    image: gitlab/gitlab-ce:17.5.0-ce.0
-    container_name: gitlab
+  postgres:
+    hostname: postgres
+    container_name: postgres
+    image: postgres:16.4
     privileged: true
     environment:
+      POSTGRES_EXTENSIONS: pg_trgm,btree_gist
+      POSTGRES_DB: gitlabhq_production
+      POSTGRES_USER: gitlab
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  redis:
+    hostname: redis
+    container_name: redis
+    image: redis:6.2
+    privileged: true
+    ports:
+      - "6379:6379"
+
+  gitlab:
+    hostname: gitlab
+    container_name: gitlab
+    image: gitlab/gitlab-ce:17.5.0-ce.0
+    privileged: true
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      GITLAB_ROOT_PASSWORD: '-rob123-'
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://localhost:8090'
 
         letsencrypt['enable'] = false
 
+        # Disable the bundled Omnibus provided PostgreSQL
+        postgresql['enable'] = false
+
+        # PostgreSQL connection details
+        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_encoding'] = 'unicode'
+        gitlab_rails['db_host'] = 'postgres'
+        gitlab_rails['db_user'] = 'gitlab'
+        gitlab_rails['db_password'] = 'password'
+
+        # Disable the bundled Redis
+        redis['enable'] = true
+
+        # Redis via TCP
+        gitlab_rails['redis_host'] = 'redis'
+        gitlab_rails['redis_port'] = 6379
+
+        gitlab_rails['backup_keep_time'] = 345600
         gitlab_rails['gitlab_default_can_create_group'] = true
+        gitlab_rails['gitlab_default_projects_features_issues'] = false
+        gitlab_rails['gitlab_default_projects_features_snippets'] = false
         gitlab_rails['gitlab_default_projects_features_visibility_level'] = 20
+        gitlab_rails['gitlab_default_projects_features_wiki'] = false
         gitlab_rails['gitlab_email_confirmation_enabled'] = false
         gitlab_rails['gitlab_email_confirmation'] = false
         gitlab_rails['gitlab_email_enabled'] = true
@@ -25,23 +75,16 @@ services:
         gitlab_rails['user_show_secondary_emails'] = false
 
         registry_external_url 'http://localhost:5050'
-
         gitlab_rails['registry_enabled'] = true
         gitlab_rails['registry_host'] = "localhost"
         gitlab_rails['registry_port'] = "5050"
         gitlab_rails['registry_path'] = "/opt/gitlab/etc/registry/storage"
-
         nginx['listen_port'] = 8090
         registry_nginx['listen_port'] = 5050
         registry_nginx['listen_https'] = false
 
-        # registry['enable'] = true
-        # registry['registry_http_addr'] = "localhost:5050"
-        # registry['env_directory'] = "/opt/gitlab/etc/registry/env"
-        # registry['log_directory'] = "/var/log/gitlab/registry"
-        # registry_nginx['redirect_http_to_https'] = false
-
-      GITLAB_ROOT_PASSWORD: '-rob123-'
+        # Optimize
+        prometheus_monitoring['enable'] = false
     ports:
       - "8090:8090"
       - "8443:443"
@@ -54,10 +97,11 @@ services:
       - gitlab_container_storage:/opt/gitlab/etc/registry/storage
 
   jenkins:
+    hostname: jenkins
+    container_name: jenkins
     build:
       context: ./jenkins
       dockerfile: Dockerfile
-    container_name: jenkins
     privileged: true
     ports:
       - "8080:8080"
@@ -76,3 +120,4 @@ volumes:
   gitlab_data:
   gitlab_logs:
   jenkins_home:
+  postgres_data:

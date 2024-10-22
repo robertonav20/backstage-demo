@@ -44,10 +44,20 @@ RUN curl -LO https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz \
 # Set Docker binaries in PATH
 ENV PATH=$PATH:/usr/local/bin/docker
 
+ARG JENKINS_ADMIN_USER
+ARG JENKINS_ADMIN_PASSWORD
+ARG GITLAB_USER
+ARG GITLAB_PASSWORD
+ARG JENKINS_FOLDER
 
-ENV API_KEY=backstage-api-key
-ENV USERNAME=root
-ENV PASSWORD=-rob123-
+ENV JENKINS_ADMIN_USER=$JENKINS_ADMIN_USER
+ENV JENKINS_ADMIN_PASSWORD=$JENKINS_ADMIN_PASSWORD
+ENV GITLAB_USER=$GITLAB_USER
+ENV GITLAB_PASSWORD=$GITLAB_PASSWORD
+ENV JENKINS_FOLDER=$JENKINS_FOLDER
 
 # Switch back to Jenkins user
 USER jenkins
+
+# Copy Groovy scripts to initialize Jenkins with default credentials and folder
+COPY init.groovy.d /usr/share/jenkins/ref/init.groovy.d/

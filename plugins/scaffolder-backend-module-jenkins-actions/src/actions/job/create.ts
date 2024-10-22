@@ -64,7 +64,7 @@ export function createJob(jenkins: Jenkins) {
           jobXml = buildCreatePipelineXml(ctx.input.repoUrl, branch, gitlabCredentials);
         }
 
-        ctx.logger.info("Trying to create job jenkins with this xml", jobXml);
+        ctx.logger.debug("Trying to create job jenkins with this xml {}", jobXml);
 
         await jenkins.job.create(ctx.input.jobName, jobXml);
         ctx.logger.info('Job created successfully!');

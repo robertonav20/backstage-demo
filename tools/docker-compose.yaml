@@ -102,6 +102,12 @@ services:
     build:
       context: ./jenkins
       dockerfile: Dockerfile
+      args:
+        JENKINS_ADMIN_USER: backstage
+        JENKINS_ADMIN_PASSWORD: backstage
+        GITLAB_USER: root
+        GITLAB_PASSWORD: -rob123-
+        JENKINS_FOLDER: backstage-test
     privileged: true
     ports:
       - "8080:8080"

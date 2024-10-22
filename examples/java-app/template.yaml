@@ -53,6 +53,11 @@ spec:
           type: string
           description: Jenkins file path
           default: ./Jenkinsfile
+        jenkinsGitlabCredentials:
+          title: Jenkins Gitlab Credentials Id
+          type: string
+          description: Jenkins credentials id configured on jenkins instance
+          default: gitlab-credentials
         repoUrl:
           title: Enter an Owner and Repository Name
           description: |
@@ -104,7 +109,14 @@ spec:
         jobName: ${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
         jobType: pipeline
         repoUrl: http://gitlab:8090/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}.git
+        gitlabCredentials: ${{ parameters.jenkinsGitlabCredentials }}
         description: Jenkins job creation
+    - id: jenkins-job-build
+      name: Jenkins Job Build
+      action: jenkins:job:build
+      input:
+        jobName: ${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+        description: Jenkins job run
   output:
     links:
       - url: http://localhost:8090/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}

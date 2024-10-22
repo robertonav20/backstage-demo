@@ -61,7 +61,14 @@ spec:
         jobName: ${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
         jobType: pipeline
         repoUrl: http://gitlab:8090/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}.git
+        gitlabCredentials: gitlab-credentials
         description: Jenkins job creation
+    - id: jenkins-job-build
+      name: Jenkins Job Build
+      action: jenkins:job:build
+      input:
+        jobName: ${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+        description: Jenkins job run
   output:
     links:
       - url: http://localhost:8090/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}

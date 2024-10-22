@@ -65,6 +65,11 @@ auth:
       development:
         clientId: ${GITLAB_DEVELOPMENT_CLIENT_ID}
         clientSecret: ${GITLAB_DEVELOPMENT_CLIENT_SECRET}
+        audience: http://localhost:8090
+        # callbackUrl: http://localhost:3000/api/auth/gitlab/handler/frame
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
 
 catalog:
   readonly: true
@@ -89,12 +94,33 @@ catalog:
       target: ../../catalog-info.yaml
 
     # Demo Software Template
-    - type: file
+    - name: static-site
+      type: file
       target: ../../examples/static-site/template.yaml
+      rules:
+        - allow: [Template]
+    - name: java-app
+      type: file
+      target: ../../examples/java-app/template.yaml
       rules:
         - allow: [Template]
 
   providers:
+    gitlab:
+      gitlab:
+        host: ${GITLAB_HOST}
+        branch: main
+        fallbackBranch: master
+        skipForkedRepos: false
+        # group: backstage-demo
+        orgEnabled: true
+        group: backstage-test
+        restrictUsersToGroup: false
+        includeUsersWithoutSeat: true
+        excludeRepos: []
+        schedule:
+          frequency: { minutes: 5 }
+          timeout: { minutes: 3 }
     backstage:
       enabled: false
       schedule:

@@ -55,7 +55,14 @@ backend.add(import('@backstage/plugin-kubernetes-backend/alpha'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 
 // gitlab
+backend.add(import('@backstage/plugin-auth-backend-module-gitlab-provider'));
+backend.add(import('@backstage/plugin-catalog-backend-module-gitlab'));
+backend.add(import('@backstage/plugin-catalog-backend-module-gitlab-org'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
 
 backend.add(import('scaffolder-backend-module-jenkins-actions'));
+
+// utils
+backend.add(import('@roadiehq/scaffolder-backend-module-utils/new-backend'));
+
 backend.start();

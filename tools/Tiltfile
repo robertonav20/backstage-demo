@@ -1,24 +1,77 @@
-DOCKER_GID = local(command='getent group docker | cut -d: -f3')
+DOCKER_GID_KEY = 'DOCKER_GID'
+GITLAB_USER_KEY = 'GITLAB_USER'
+GITLAB_PASSWORD_KEY = 'GITLAB_PASSWORD'
+JENKINS_ADMIN_PASSWORD_KEY = 'JENKINS_ADMIN_PASSWORD'
+JENKINS_ADMIN_USER_KEY = 'JENKINS_ADMIN_USER'
+JENKINS_FOLDER_KEY = 'JENKINS_FOLDER'
+POSTGRES_EXTENSIONS_KEY = 'POSTGRES_EXTENSIONS'
+POSTGRES_DB_KEY = 'POSTGRES_DB'
+POSTGRES_USER_KEY = 'POSTGRES_USER'
+POSTGRES_PASSWORD_KEY = 'POSTGRES_PASSWORD'
+POSTGRES_HOST_AUTH_METHOD_KEY = 'POSTGRES_HOST_AUTH_METHOD'
 
-os.putenv('DOCKER_GID', DOCKER_GID)
+DOCKER_GID_VALUE = local(command='getent group docker | cut -d: -f3')
+GITLAB_USER_VALUE = 'root'
+GITLAB_PASSWORD_VALUE = '-rob123-'
+JENKINS_ADMIN_PASSWORD_VALUE = 'backstage'
+JENKINS_ADMIN_USER_VALUE = 'backstage'
+JENKINS_FOLDER_VALUE = 'backstage-demo'
+POSTGRES_EXTENSIONS_VALUE = 'pg_trgm,btree_gist'
+POSTGRES_DB_VALUE = 'gitlabhq_production'
+POSTGRES_USER_VALUE = 'gitlab'
+POSTGRES_PASSWORD_VALUE = 'password'
+POSTGRES_HOST_AUTH_METHOD_VALUE = 'trust'
 
-os.putenv('GITLAB_PASSWORD', '-rob123-')
-os.putenv('GITLAB_USER', 'root')
-os.putenv('JENKINS_ADMIN_PASSWORD', 'backstage')
-os.putenv('JENKINS_ADMIN_USER', 'backstage')
-os.putenv('JENKINS_FOLDER', 'backstage-demo')
-os.putenv('POSTGRES_EXTENSIONS', 'pg_trgm,btree_gist')
-os.putenv('POSTGRES_DB', 'gitlabhq_production')
-os.putenv('POSTGRES_USER', 'gitlab')
-os.putenv('POSTGRES_PASSWORD', 'password')
-os.putenv('POSTGRES_HOST_AUTH_METHOD', 'trust')
+os.putenv(DOCKER_GID_KEY, DOCKER_GID_VALUE)
+os.putenv(GITLAB_USER_KEY, GITLAB_USER_VALUE)
+os.putenv(GITLAB_PASSWORD_KEY, GITLAB_PASSWORD_VALUE)
+os.putenv(JENKINS_ADMIN_PASSWORD_KEY, JENKINS_ADMIN_PASSWORD_VALUE)
+os.putenv(JENKINS_ADMIN_USER_KEY, JENKINS_ADMIN_USER_VALUE)
+os.putenv(JENKINS_FOLDER_KEY, JENKINS_FOLDER_VALUE)
+os.putenv(POSTGRES_EXTENSIONS_KEY, POSTGRES_EXTENSIONS_VALUE)
+os.putenv(POSTGRES_DB_KEY, POSTGRES_DB_VALUE)
+os.putenv(POSTGRES_USER_KEY, POSTGRES_USER_VALUE)
+os.putenv(POSTGRES_PASSWORD_KEY, POSTGRES_PASSWORD_VALUE)
+os.putenv(POSTGRES_HOST_AUTH_METHOD_KEY, POSTGRES_HOST_AUTH_METHOD_VALUE)
 
-docker_build('gitlab-image', './gitlab')
-docker_build('jenkins-image', './jenkins')
+docker_build(
+    ref = 'gitlab-image',
+    context = './gitlab',
+    build_args = {
+        DOCKER_GID_KEY: DOCKER_GID_VALUE,
+        GITLAB_USER_KEY: GITLAB_USER_VALUE,
+        GITLAB_PASSWORD_KEY: GITLAB_PASSWORD_VALUE,
+        JENKINS_ADMIN_PASSWORD_KEY: JENKINS_ADMIN_PASSWORD_VALUE,
+        JENKINS_ADMIN_USER_KEY: JENKINS_ADMIN_USER_VALUE,
+        JENKINS_FOLDER_KEY: JENKINS_FOLDER_VALUE,
+        POSTGRES_EXTENSIONS_KEY: POSTGRES_EXTENSIONS_VALUE,
+        POSTGRES_DB_KEY: POSTGRES_DB_VALUE,
+        POSTGRES_USER_KEY: POSTGRES_USER_VALUE,
+        POSTGRES_PASSWORD_KEY: POSTGRES_PASSWORD_VALUE,
+        POSTGRES_HOST_AUTH_METHOD_KEY: POSTGRES_HOST_AUTH_METHOD_VALUE
+    }
+)
+docker_build(
+    ref ='jenkins-image',
+    context = './jenkins',
+    build_args = {
+        DOCKER_GID_KEY: DOCKER_GID_VALUE,
+        GITLAB_USER_KEY: GITLAB_USER_VALUE,
+        GITLAB_PASSWORD_KEY: GITLAB_PASSWORD_VALUE,
+        JENKINS_ADMIN_PASSWORD_KEY: JENKINS_ADMIN_PASSWORD_VALUE,
+        JENKINS_ADMIN_USER_KEY: JENKINS_ADMIN_USER_VALUE,
+        JENKINS_FOLDER_KEY: JENKINS_FOLDER_VALUE,
+        POSTGRES_EXTENSIONS_KEY: POSTGRES_EXTENSIONS_VALUE,
+        POSTGRES_DB_KEY: POSTGRES_DB_VALUE,
+        POSTGRES_USER_KEY: POSTGRES_USER_VALUE,
+        POSTGRES_PASSWORD_KEY: POSTGRES_PASSWORD_VALUE,
+        POSTGRES_HOST_AUTH_METHOD_KEY: POSTGRES_HOST_AUTH_METHOD_VALUE
+    }
+)
 
-docker_compose('./docker-compose.yaml')
+docker_compose( configPaths = './docker-compose.yaml')
 
-dc_resource('gitlab', labels=['Services'])
-dc_resource('jenkins', labels=['Services'])
-dc_resource('postgres', labels=['Services'])
-dc_resource('redis', labels=['Services'])
+dc_resource(name = 'gitlab', labels = ['Services'])
+dc_resource(name = 'jenkins', labels = ['Services'])
+dc_resource(name = 'postgres', labels = ['Services'])
+dc_resource(name = 'redis', labels = ['Services'])

@@ -14,14 +14,15 @@ RUN jenkins-plugin-cli --plugins \
 
 # Install packages
 USER root
-RUN apt-get update && apt-get install -y \
-    nodejs \
-    npm \
-    maven \
-    curl \
+
+RUN apt-get update && apt-get install -qyy \
     apt-transport-https \
     ca-certificates \
+    curl \
     gnupg2 \
+    maven \
+    nodejs \
+    npm \
     software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 

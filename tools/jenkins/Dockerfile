@@ -9,6 +9,7 @@ RUN jenkins-plugin-cli --plugins \
     kubernetes-cli:1.12.1 \
     gitlab-plugin:1.9.4 \
     workflow-aggregator:600.vb_57cdd26fdd7 \
+    docker-plugin:1.7.0 \
     docker-workflow:580.vc0c340686b_54 \
     credentials
 

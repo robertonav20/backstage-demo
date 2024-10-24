@@ -23,10 +23,10 @@ spec:
           type: string
           ui:autofocus: true
           ui:field: RepoUrlPicker
-          default: localhost:8090?owner=backstage-demo&repo=static-site
+          default: gitlab.local:8090?owner=backstage-demo&repo=static-site
           ui:options:
             allowedHosts:
-              - localhost:8090
+              - gitlab.local:8090
   steps:
     - id: list-inputs
       name: List Inputs
@@ -49,7 +49,7 @@ spec:
       name: Publish
       action: publish:gitlab
       input:
-        allowedHosts: ["localhost:8090"]
+        allowedHosts: ["gitlab.local:8090"]
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
         defaultBranch: main
@@ -65,7 +65,7 @@ spec:
         description: Jenkins job creation
   output:
     links:
-      - url: http://localhost:8090/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
-        title: "Github Repository"
-      - url: http://localhost:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+      - url: http://gitlab.local:8090/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+        title: "Gitlab Repository"
+      - url: http://jenkins.local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ (parameters.repoUrl | parseRepoUrl).repo }}
         title: "Jenkins Job"

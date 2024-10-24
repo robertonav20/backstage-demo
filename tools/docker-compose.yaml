@@ -25,7 +25,7 @@ services:
       - "6379:6379"
 
   gitlab:
-    hostname: gitlab
+    hostname: gitlab.local
     container_name: gitlab
     image: gitlab-image
     build:
@@ -37,7 +37,7 @@ services:
     environment:
       GITLAB_ROOT_PASSWORD: ${GITLAB_PASSWORD}
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://localhost:8090'
+        external_url 'http://gitlab.local:8090'
 
         letsencrypt['enable'] = false
 
@@ -76,7 +76,7 @@ services:
         gitlab_rails['user_is_active'] = true
         gitlab_rails['user_show_secondary_emails'] = false
 
-        registry_external_url 'http://localhost:5050'
+        registry_external_url 'http://gitlab.local:5050'
         gitlab_rails['registry_enabled'] = true
         gitlab_rails['registry_host'] = "localhost"
         gitlab_rails['registry_port'] = "5050"
@@ -106,7 +106,7 @@ services:
       - gitlab_container_storage:/opt/gitlab/etc/registry/storage
 
   jenkins:
-    hostname: jenkins
+    hostname: jenkins.local
     container_name: jenkins
     image: jenkins-image
     build:

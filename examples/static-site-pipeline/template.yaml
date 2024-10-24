@@ -3,10 +3,10 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: java-app-template
-  title: Java App Template
+  name: static-site-pipeline-template
+  title: Static Site Pipeline Template
   description: |
-    This template will create a simple java app repository under owner folder/group and a related job jenkins with under the same folder.
+    This template will create a simple static site app repository under owner folder/group and a related job jenkins with under the same folder.
     You will obtain button links after job execution
 spec:
   type: website
@@ -27,6 +27,10 @@ spec:
           default: |
             pipeline {
               agent any
+              environment {
+                  REGISTRY_URL = 'http://gitlab.local:5050'
+                  IMAGE_NAME = 'gitlab.local:5050/backstage-demo/static-site-pipeline:latest'
+              }
               stages {
                 stage('Docker version') {
                   steps {
@@ -34,15 +38,29 @@ spec:
                     sh 'docker version'
                   }
                 }
+                stage('Docker login') {
+                  steps {
+                    withCredentials([usernamePassword(credentialsId: 'gitlab-credentials', usernameVariable: 'GITLAB_USER', passwordVariable: 'GITLAB_TOKEN')]) {
+                      sh ('echo ${GITLAB_TOKEN} | docker login -u ${GITLAB_USER} --password-stdin ${REGISTRY_URL}')
+                    }
+                  }
+                }
                 stage('Build') {
                   steps {
                     echo "Building app"
-                    sleep 10
+                    sh('docker build -t ${IMAGE_NAME} .')
                   }
                 }
-                stage('Deploy') {
+                stage('Publish') {
                   steps {
-                    echo "Deploying app"
+                    echo "Publishing image"
+                    sh ('docker push ${IMAGE_NAME}')
+                  }
+                }
+                stage('Docker logout') {
+                  steps {
+                    echo "Logout from registry url ${REGISTRY_URL}"
+                    sh ('docker logout ${REGISTRY_URL}')
                   }
                 }
               }
@@ -64,10 +82,10 @@ spec:
           type: string
           ui:autofocus: true
           ui:field: RepoUrlPicker
-          default: localhost:8090?owner=backstage-demo&repo=java-app
+          default: gitlab.local:8090?owner=backstage-demo&repo=static-site-pipeline
           ui:options:
             allowedHosts:
-              - localhost:8090
+              - gitlab.local:8090
   steps:
     - id: list-inputs
       name: List Inputs
@@ -96,7 +114,7 @@ spec:
       name: Publish
       action: publish:gitlab
       input:
-        allowedHosts: ["localhost:8090"]
+        allowedHosts: ["gitlab.local:8090"]
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
         defaultBranch: main
@@ -118,7 +136,7 @@ spec:
         description: Jenkins job run
   output:
     links:
-      - url: http://localhost:8090/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
-        title: "Github Repository"
-      - url: http://localhost:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+      - url: http://gitlab.local:8090/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+        title: "Gitlab Repository"
+      - url: http://jenkins.local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ (parameters.repoUrl | parseRepoUrl).repo }}
         title: "Jenkins Job"

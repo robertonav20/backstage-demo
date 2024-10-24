@@ -9,14 +9,31 @@ yarn install
 yarn dev
 ```
 
-[Backstage - UI](http://localhost:3000)
-[Backstage - BE](http://localhost:7000)
-[Gitlab](http://localhost:8090)
-[Jenkins](http://localhost:8080)
+## Useful links
+
+- [Backstage - UI](http://localhost:3000)
+- [Backstage - BE](http://localhost:7000)
+- [Gitlab](http://gitlab.local:8090)
+- [Jenkins](http://jenkins.local:8080)
+
+## Installation
+
+1. **Add these 2 hostnames to /etc/hosts**
 
 ```sh
-docker-compose up -d
+echo "127.0.0.1 gitlab.local" | sudo tee -a /etc/hosts
+echo "127.0.0.1 jenkins.local" | sudo tee -a /etc/hosts
 ```
+
+2. **Tilt use docker-compose file as default**
+
+```sh
+tilt up
+```
+
+The latest command will create and run a container of **gitlab**, **jenkins**, **postgres** and **redis**. All of them are mandatory to execute backstage and own templates.
+
+## Run local kubernetes cluster
 
 ```sh
 sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80
@@ -159,5 +176,7 @@ kubectl get secret backstage-secret -o jsonpath='{.data.token}' | base64 --decod
 
 CA CRT version
 kubectl get secret backstage-secret -o jsonpath='{.data.ca\.crt}'
+
+tilt up -f Tiltfile-k3d
 
 ```

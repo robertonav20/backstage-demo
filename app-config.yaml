@@ -65,7 +65,7 @@ auth:
       development:
         clientId: ${GITLAB_DEVELOPMENT_CLIENT_ID}
         clientSecret: ${GITLAB_DEVELOPMENT_CLIENT_SECRET}
-        audience: http://localhost:8090
+        audience: http://gitlab.local:8090
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
@@ -97,9 +97,9 @@ catalog:
       target: ../../examples/static-site/template.yaml
       rules:
         - allow: [Template]
-    - name: java-app
+    - name: static-site-pipeline
       type: file
-      target: ../../examples/java-app/template.yaml
+      target: ../../examples/static-site-pipeline/template.yaml
       rules:
         - allow: [Template]
 

@@ -6,11 +6,11 @@ services:
     image: postgres:16.4
     privileged: true
     environment:
-      POSTGRES_EXTENSIONS: pg_trgm,btree_gist
-      POSTGRES_DB: gitlabhq_production
-      POSTGRES_USER: gitlab
-      POSTGRES_PASSWORD: password
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_EXTENSIONS: $POSTGRES_EXTENSIONS
+      POSTGRES_HOST_AUTH_METHOD: $POSTGRES_HOST_AUTH_METHOD
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_USER: $POSTGRES_USER
     ports:
       - "5432:5432"
     volumes:
@@ -27,13 +27,16 @@ services:
   gitlab:
     hostname: gitlab
     container_name: gitlab
-    image: gitlab/gitlab-ce:17.5.0-ce.0
+    image: gitlab-image
+    build:
+      context: ./gitlab
     privileged: true
     depends_on:
       - postgres
       - redis
     environment:
-      GITLAB_ROOT_PASSWORD: '-rob123-'
+      GITLAB_LOG_LEVEL: 'ERROR'
+      GITLAB_ROOT_PASSWORD: $GITLAB_PASSWORD
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://localhost:8090'
 
@@ -85,11 +88,18 @@ services:
 
         # Optimize
         prometheus_monitoring['enable'] = false
+    entrypoint: ["/bin/bash", "-c", "/scripts/gitlab-startup.sh"]
     ports:
       - "8090:8090"
       - "8443:443"
       - "5050:5050"
       - "2424:2424"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/-/readiness"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
     volumes:
       - gitlab_config:/etc/gitlab
       - gitlab_logs:/var/log/gitlab
@@ -99,16 +109,19 @@ services:
   jenkins:
     hostname: jenkins
     container_name: jenkins
+    image: jenkins-image
     build:
       context: ./jenkins
       dockerfile: Dockerfile
       args:
-        JENKINS_ADMIN_USER: backstage
-        JENKINS_ADMIN_PASSWORD: backstage
-        GITLAB_USER: root
-        GITLAB_PASSWORD: -rob123-
-        JENKINS_FOLDER: backstage-test
+        GITLAB_PASSWORD: $GITLAB_PASSWORD
+        GITLAB_USER: $GITLAB_USER
+        JENKINS_ADMIN_PASSWORD: $JENKINS_ADMIN_PASSWORD
+        JENKINS_ADMIN_USER: $JENKINS_ADMIN_USER
+        JENKINS_FOLDER: $JENKINS_FOLDER
     privileged: true
+    group_add:
+        - 984
     ports:
       - "8080:8080"
       - "50000:50000"
@@ -116,7 +129,8 @@ services:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock  # For Docker in Jenkins
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
     depends_on:
       - gitlab
 

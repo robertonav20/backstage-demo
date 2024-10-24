@@ -28,22 +28,21 @@ spec:
             pipeline {
               agent any
               stages {
-                stage('Build') {
+                stage('Docker version') {
                   steps {
-                    echo "building"
-                    sleep 10
+                    echo "Printing docker version"
+                    sh 'docker version'
                   }
                 }
-                stage('Test') {
+                stage('Build') {
                   steps {
-                    echo "testing"
-                    sleep 30
+                    echo "Building app"
+                    sleep 10
                   }
                 }
                 stage('Deploy') {
                   steps {
-                    echo "deploying"
-                    stageMessage "sample stage message"
+                    echo "Deploying app"
                   }
                 }
               }
@@ -65,7 +64,7 @@ spec:
           type: string
           ui:autofocus: true
           ui:field: RepoUrlPicker
-          default: localhost:8090?owner=backstage-test&repo=java-app
+          default: localhost:8090?owner=backstage-demo&repo=java-app
           ui:options:
             allowedHosts:
               - localhost:8090

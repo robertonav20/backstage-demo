@@ -5,7 +5,7 @@ import com.cloudbees.hudson.plugins.folder.*
 def jenkinsInstance = Jenkins.getInstance()
 
 // Folder name
-def folderName = System.getenv("JENKINS_FOLDER") ?: "backstage-test"
+def folderName = System.getenv("JENKINS_FOLDER") ?: "backstage-demo"
 
 // Check if the folder already exists
 if (jenkinsInstance.getItem(folderName) == null) {

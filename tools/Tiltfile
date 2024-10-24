@@ -1,6 +1,24 @@
-k8s_yaml('postgres/postgres.yaml')
-k8s_resource('postgres', port_forwards=['5432:5432'])
+DOCKER_GID = local(command='getent group docker | cut -d: -f3')
 
-k8s_yaml('redis/redis.yaml')
-k8s_resource('redis', port_forwards=['6379:6379'])
+os.putenv('DOCKER_GID', DOCKER_GID)
 
+os.putenv('GITLAB_PASSWORD', '-rob123-')
+os.putenv('GITLAB_USER', 'root')
+os.putenv('JENKINS_ADMIN_PASSWORD', 'backstage')
+os.putenv('JENKINS_ADMIN_USER', 'backstage')
+os.putenv('JENKINS_FOLDER', 'backstage-demo')
+os.putenv('POSTGRES_EXTENSIONS', 'pg_trgm,btree_gist')
+os.putenv('POSTGRES_DB', 'gitlabhq_production')
+os.putenv('POSTGRES_USER', 'gitlab')
+os.putenv('POSTGRES_PASSWORD', 'password')
+os.putenv('POSTGRES_HOST_AUTH_METHOD', 'trust')
+
+docker_build('gitlab-image', './gitlab')
+docker_build('jenkins-image', './jenkins')
+
+docker_compose('./docker-compose.yaml')
+
+dc_resource('gitlab', labels=['Services'])
+dc_resource('jenkins', labels=['Services'])
+dc_resource('postgres', labels=['Services'])
+dc_resource('redis', labels=['Services'])

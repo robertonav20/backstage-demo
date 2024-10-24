@@ -27,9 +27,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN npm install --global yarn npx
 
-# Install Docker CLI
-RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh && rm get-docker.sh
-
 # Install kubectl
 RUN curl -LO "https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl" \
     && chmod +x kubectl \
@@ -44,16 +41,16 @@ RUN curl -LO https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz \
 # Set Docker binaries in PATH
 ENV PATH=$PATH:/usr/local/bin/docker
 
-ARG JENKINS_ADMIN_USER
-ARG JENKINS_ADMIN_PASSWORD
-ARG GITLAB_USER
 ARG GITLAB_PASSWORD
+ARG GITLAB_USER
+ARG JENKINS_ADMIN_PASSWORD
+ARG JENKINS_ADMIN_USER
 ARG JENKINS_FOLDER
 
-ENV JENKINS_ADMIN_USER=$JENKINS_ADMIN_USER
-ENV JENKINS_ADMIN_PASSWORD=$JENKINS_ADMIN_PASSWORD
-ENV GITLAB_USER=$GITLAB_USER
 ENV GITLAB_PASSWORD=$GITLAB_PASSWORD
+ENV GITLAB_USER=$GITLAB_USER
+ENV JENKINS_ADMIN_PASSWORD=$JENKINS_ADMIN_PASSWORD
+ENV JENKINS_ADMIN_USER=$JENKINS_ADMIN_USER
 ENV JENKINS_FOLDER=$JENKINS_FOLDER
 
 # Switch back to Jenkins user

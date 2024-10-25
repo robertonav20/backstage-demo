@@ -2,7 +2,7 @@ import { scaffolderBackendModuleJenkinsActions } from './module';
 
 /***/
 /**
- * The scaffolder-backend-module-jenkins-actions module for @backstage/plugin-scaffolder-backend.
+ * The backstage-plugin-scaffolder-jenkins-actions module for @backstage/plugin-scaffolder-backend.
  *
  * @packageDocumentation
  */

@@ -14557,7 +14557,7 @@ __metadata:
     better-sqlite3: "npm:^9.0.0"
     node-gyp: "npm:^10.0.0"
     pg: "npm:^8.11.3"
-    scaffolder-backend-module-jenkins-actions: "npm:^0.1.0"
+    backstage-plugin-scaffolder-jenkins-actions: "npm:^0.1.0"
     winston: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
@@ -28270,9 +28270,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scaffolder-backend-module-jenkins-actions@npm:^0.1.0, scaffolder-backend-module-jenkins-actions@workspace:plugins/scaffolder-backend-module-jenkins-actions":
+"backstage-plugin-scaffolder-jenkins-actions@npm:^0.1.0, backstage-plugin-scaffolder-jenkins-actions@workspace:plugins/backstage-plugin-scaffolder-jenkins-actions":
   version: 0.0.0-use.local
-  resolution: "scaffolder-backend-module-jenkins-actions@workspace:plugins/scaffolder-backend-module-jenkins-actions"
+  resolution: "backstage-plugin-scaffolder-jenkins-actions@workspace:plugins/backstage-plugin-scaffolder-jenkins-actions"
   dependencies:
     "@backstage/backend-plugin-api": "npm:^1.0.1"
     "@backstage/cli": "npm:^0.27.1"

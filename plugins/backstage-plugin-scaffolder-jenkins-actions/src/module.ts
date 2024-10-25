@@ -13,7 +13,7 @@ import { buildJenkinsClient, JenkinsConfig } from "./config";
  */
 export const scaffolderBackendModuleJenkinsActions = createBackendModule({
   pluginId: 'scaffolder',
-  moduleId: 'scaffolder-backend-module-jenkins-actions',
+  moduleId: 'backstage-plugin-scaffolder-jenkins-actions',
   register({ registerInit }) {
     registerInit({
       deps: {

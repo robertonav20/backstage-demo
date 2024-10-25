@@ -1,6 +1,6 @@
 {
-  "name": "scaffolder-backend-module-jenkins-actions",
-  "description": "The scaffolder-backend-module-jenkins-actions module for @backstage/plugin-scaffolder-backend",
+  "name": "backstage-plugin-scaffolder-jenkins-actions",
+  "description": "The backstage-plugin-scaffolder-jenkins-actions module for @backstage/plugin-scaffolder-backend",
   "version": "0.1.0",
   "main": "src/index.ts",
   "types": "src/index.ts",

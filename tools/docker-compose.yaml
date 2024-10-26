@@ -59,6 +59,7 @@ services:
         gitlab_rails['redis_port'] = 6379
 
         gitlab_rails['backup_keep_time'] = 345600
+        gitlab_rails['auto_devops_enabled'] = false
         gitlab_rails['gitlab_default_can_create_group'] = true
         gitlab_rails['gitlab_default_projects_features_issues'] = false
         gitlab_rails['gitlab_default_projects_features_snippets'] = false

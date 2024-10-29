@@ -60,6 +60,8 @@ backend.add(import('@backstage/plugin-catalog-backend-module-gitlab'));
 backend.add(import('@backstage/plugin-catalog-backend-module-gitlab-org'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
 
+// Jenkins
+backend.add(import('@backstage-community/plugin-jenkins-backend'));
 backend.add(import('@robertonav20/backstage-plugin-scaffolder-jenkins-actions'));
 
 // utils

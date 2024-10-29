@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: backstage-demo
+  description: The backstage-demo group
+spec:
+  type: business-unit
+  profile:
+    displayName: Backstage Demo
+  children: []

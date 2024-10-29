@@ -32,9 +32,9 @@ metadata:
     backstage.io/source-template: template:default/springboot-template
     backstage.io/linguist: "https://github.com/backstage/backstage/tree/master/plugins/playlist"
     backstage.io/kubernetes-label-selector: 'app=foo'
-    jenkins.io/job-full-name: jenkins
+    jenkins.io/job-full-name: 'backstage-demo/static-site-pipeline'
 spec:
-  type: service
+  type: website
   lifecycle: experimental
-  owner: team-a
-  system: artist-engagement-portal
+  owner: "group:default/backstage-demo"
+

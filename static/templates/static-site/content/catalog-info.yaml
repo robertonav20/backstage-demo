@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{values.component_id | dump }}
+  {%- if values.description %}
+  description: ${{values.description | dump}}
+  {%- endif %}
+  annotations:
+    github.com/project-slug: ${{values.owner + "/" + values.repo}}
+    'jenkins.io/job-full-name': ${{values.owner + "/" + values.repo}}
+spec:
+  type: website
+  lifecycle: experimental
+  owner: group:default/${{values.owner | dump}}

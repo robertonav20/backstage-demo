@@ -43,6 +43,8 @@ spec:
       input:
         url: ./content
         values:
+          component_id: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+          description: 'Static site component'
           owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
           repo: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
     - id: publish
@@ -58,14 +60,20 @@ spec:
       name: Jenkins Job Create
       action: jenkins:job:create
       input:
-        jobName: ${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+        jobName: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
         jobType: pipeline
-        repoUrl: http://gitlab:8090/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}.git
-        gitlabCredentials: gitlab-credentials
+        repoUrl: http://gitlab:8090/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}.git
+        gitlabCredentials: ${{ parameters.jenkinsGitlabCredentials }}
         description: Jenkins job creation
+    - id: register
+      name: Register Component
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml"
   output:
     links:
-      - url: http://gitlab.local:8090/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+      - url: ${{ steps.publish.output.repoContentsUrl }}
         title: "Gitlab Repository"
-      - url: http://jenkins.local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+      - url: http://jenkins.local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
         title: "Jenkins Job"

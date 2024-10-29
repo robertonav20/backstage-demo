@@ -48,7 +48,7 @@
       "cwd": "${workspaceFolder}/packages/backend",
       "program": "${workspaceFolder}/node_modules/.bin/backstage-cli",
       "env": {
-        "LOG_LEVEL": "debug",
+        "LOG_LEVEL": "info",
         "NODE_OPTIONS": "--no-node-snapshot",
         "GITLAB_HOST": "gitlab.local:8090",
         "GITLAB_BASE_URL": "http://gitlab.local:8090/",

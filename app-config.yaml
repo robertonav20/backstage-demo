@@ -71,37 +71,43 @@ auth:
             - resolver: usernameMatchingUserEntityName
 
 catalog:
-  readonly: true
+  readonly: false
   rules:
-    - allow: [Component, API, System, Domain, Resource, Location, User, Group]
+    - allow: [Component, API, System, Domain, Resource, Location, User, Group, Template]
+  processingInterval: { seconds: 30 }
   locations:
-    # Backstage example systems
-    - type: url
-      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-systems.yaml
+    # Users
+    - name: backstage-demo-user
+      type: file
+      target: ../../static/users/backstage-demo.yaml
+    # Groups
+    - name: backstage-demo-group
+      type: file
+      target: ../../static/groups/backstage-demo.yaml
+    # Templates
+    - name: static-site
+      type: file
+      target: ../../static/templates/static-site/template.yaml
+    - name: static-site-pipeline
+      type: file
+      target: ../../static/templates/static-site-pipeline/template.yaml
 
-    # Backstage example organization groups
-    - type: url
-      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
+    # # Backstage example systems
+    # - type: url
+    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-systems.yaml
 
-    # The backstage demo deployment (this)
-    - type: url
-      target: https://github.com/backstage/demo/blob/master/catalog-info.yaml
+    # # Backstage example organization groups
+    # - type: url
+    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
+
+    # # The backstage demo deployment (this)
+    # - type: url
+    #   target: https://github.com/backstage/demo/blob/master/catalog-info.yaml
 
     # Demo Software Template
     - type: file
       target: ../../catalog-info.yaml
 
-    # Demo Software Template
-    - name: static-site
-      type: file
-      target: ../../examples/static-site/template.yaml
-      rules:
-        - allow: [Template]
-    - name: static-site-pipeline
-      type: file
-      target: ../../examples/static-site-pipeline/template.yaml
-      rules:
-        - allow: [Template]
 
   providers:
     gitlab:
@@ -159,6 +165,8 @@ jenkins:
   username: ${JENKINS_USERNAME}
   password: ${JENKINS_PASSWORD}
   crumbIssuerEnabled: ${JENKINS_CRUMB_ISSUER_ENABLED}
+  projectCountLimit: 100
+  apiKey: ${JENKINS_PASSWORD}
 
 kubernetes:
   serviceLocatorMethod:

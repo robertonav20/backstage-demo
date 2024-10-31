@@ -15,7 +15,7 @@ GITLAB_APPLICATION_CLIENT_SECRET_FILE=$GITLAB_SCRIPTS_DIR/gitlab.client-secret
 function wait_for_gitlab() {
     echo "Startup - Waiting for GitLab to be ready..."
 
-    while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:8090/-/readiness)" != "200" ]]; do
+    while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost/-/readiness)" != "200" ]]; do
         echo "Startup - GitLab is not ready yet, waiting..." 2>&1 | tee -a "$LOG_FILE"
         sleep 30
     done

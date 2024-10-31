@@ -25,7 +25,7 @@ services:
       - "6379:6379"
 
   gitlab:
-    hostname: gitlab.local
+    hostname: gitlab-local
     container_name: gitlab
     image: gitlab-image
     build:
@@ -47,7 +47,7 @@ services:
     environment:
       GITLAB_ROOT_PASSWORD: ${GITLAB_PASSWORD}
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.local:8090'
+        external_url 'http://gitlab-local'
 
         letsencrypt['enable'] = false
 
@@ -87,12 +87,12 @@ services:
         gitlab_rails['user_is_active'] = true
         gitlab_rails['user_show_secondary_emails'] = false
 
-        registry_external_url 'http://gitlab.local:5050'
+        registry_external_url 'http://gitlab-local:5050'
         gitlab_rails['registry_enabled'] = true
         gitlab_rails['registry_host'] = "localhost"
         gitlab_rails['registry_port'] = "5050"
         gitlab_rails['registry_path'] = "/opt/gitlab/etc/registry/storage"
-        nginx['listen_port'] = 8090
+        nginx['listen_port'] = 80
         registry_nginx['listen_port'] = 5050
         registry_nginx['listen_https'] = false
 
@@ -100,12 +100,12 @@ services:
         prometheus_monitoring['enable'] = false
     entrypoint: ["/bin/bash", "-c", "/scripts/gitlab-startup.sh"]
     ports:
-      - "8090:8090"
+      - "80:80"
       - "8443:443"
       - "5050:5050"
       - "2424:2424"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8090/-/readiness"]
+      test: ["CMD", "curl", "-f", "http://localhost/-/readiness"]
       interval: 30s
       timeout: 10s
       retries: 5

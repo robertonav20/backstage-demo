@@ -82,10 +82,10 @@ spec:
           type: string
           ui:autofocus: true
           ui:field: RepoUrlPicker
-          default: gitlab.local:8090?owner=backstage-demo&repo=static-site-pipeline
+          default: gitlab-local?owner=backstage-demo&repo=static-site-pipeline
           ui:options:
             allowedHosts:
-              - gitlab.local:8090
+              - gitlab-local
   steps:
     - id: list-inputs
       name: List Inputs
@@ -116,7 +116,7 @@ spec:
       name: Publish
       action: publish:gitlab
       input:
-        allowedHosts: ["gitlab.local:8090"]
+        allowedHosts: ["gitlab-local"]
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
         defaultBranch: main
@@ -127,7 +127,7 @@ spec:
       input:
         jobName: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
         jobType: pipeline
-        repoUrl: http://gitlab:8090/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}.git
+        repoUrl: http://gitlab-local/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}.git
         gitlabCredentials: ${{ parameters.jenkinsGitlabCredentials }}
         description: Jenkins job creation
     - id: jenkins-job-build
@@ -146,5 +146,5 @@ spec:
     links:
       - url: ${{ steps.publish.output.repoContentsUrl }}
         title: "Gitlab Repository"
-      - url: http://jenkins.local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+      - url: http://jenkins-local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
         title: "Jenkins Job"

@@ -13,16 +13,16 @@ yarn dev
 
 - [Backstage - UI](http://localhost:3000)
 - [Backstage - BE](http://localhost:7000)
-- [Gitlab](http://gitlab.local:8090)
-- [Jenkins](http://jenkins.local:8080)
+- [Gitlab](http://gitlab-local)
+- [Jenkins](http://jenkins-local)
 
 ## Installation
 
 1. **Add these 2 hostnames to /etc/hosts**
 
 ```sh
-echo "127.0.0.1 gitlab.local" | sudo tee -a /etc/hosts
-echo "127.0.0.1 jenkins.local" | sudo tee -a /etc/hosts
+echo "127.0.0.1 gitlab-local" | sudo tee -a /etc/hosts
+echo "127.0.0.1 jenkins-local" | sudo tee -a /etc/hosts
 ```
 
 2. **Tilt use docker-compose file as default**

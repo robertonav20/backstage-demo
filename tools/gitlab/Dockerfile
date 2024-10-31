@@ -2,7 +2,8 @@ FROM gitlab/gitlab-ce:17.5.0-ce.0
 
 RUN apt-get update && apt-get install -qyy jq
 
-ARG GITLAB_URL=http://gitlab.local:8090
+ARG GITLAB_HOST=gitlab-local
+ARG GITLAB_URL=http://gitlab-local
 ARG GITLAB_USER
 ARG GITLAB_PASSWORD
 ARG GITLAB_GROUP=backstage-demo
@@ -12,6 +13,7 @@ ARG GITLAB_CLIENT_SECRET
 ARG GITLAB_SCRIPTS_DIR="/scripts"
 ARG GITLAB_TEMPLATES_DIR="/scripts/templates"
 
+ENV GITLAB_HOST=$GITLAB_HOST
 ENV GITLAB_URL=$GITLAB_URL
 ENV GITLAB_USER=$GITLAB_USER
 ENV GITLAB_PASSWORD=$GITLAB_PASSWORD

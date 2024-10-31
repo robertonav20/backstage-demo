@@ -65,7 +65,7 @@ auth:
       development:
         clientId: ${GITLAB_DEVELOPMENT_CLIENT_ID}
         clientSecret: ${GITLAB_DEVELOPMENT_CLIENT_SECRET}
-        audience: http://gitlab.local:8090
+        audience: ${GITLAB_BASE_URL}
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
@@ -94,9 +94,9 @@ catalog:
 
     # Backstage example systems
     - type: url
-      target: http://gitlab.local:8090/backstage-demo/templates/static-site/-/blob/main/template.yaml
+      target: ${GITLAB_BASE_URL}/backstage-demo/templates/static-site/-/blob/main/template.yaml
     - type: url
-      target: http://gitlab.local:8090/backstage-demo/templates/static-site-pipeline/-/blob/main/template.yaml
+      target: ${GITLAB_BASE_URL}/backstage-demo/templates/static-site-pipeline/-/blob/main/template.yaml
 
 
   providers:

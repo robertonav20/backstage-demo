@@ -94,9 +94,9 @@ catalog:
 
     # Backstage example systems
     - type: url
-      target: http://gitlab.local:8090/backstage-demo/templates/static-site/template.yaml
+      target: http://gitlab.local:8090/backstage-demo/templates/static-site/-/blob/main/template.yaml
     - type: url
-      target: http://gitlab.local:8090/backstage-demo/templates/static-site-pipeline/template.yaml
+      target: http://gitlab.local:8090/backstage-demo/templates/static-site-pipeline/-/blob/main/template.yaml
 
 
   providers:

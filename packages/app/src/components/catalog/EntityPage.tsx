@@ -83,20 +83,7 @@ const cicdContent = (
      */}
 
     <EntitySwitch.Case>
-      <EmptyState
-        title="No CI/CD available for this entity"
-        missing="info"
-        description="You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below."
-        action={
-          <Button
-            variant="contained"
-            color="primary"
-            href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
-          >
-            Read more
-          </Button>
-        }
-      />
+      <EntityJenkinsContent />
     </EntitySwitch.Case>
   </EntitySwitch>
 );
@@ -150,9 +137,6 @@ const overviewContent = (
 
 const serviceEntityPage = (
   <EntityLayout>
-    <EntityLayout.Route path="/jenkins" title="Jenkins">
-      <EntityJenkinsContent />
-    </EntityLayout.Route>
     <EntityLayout.Route path="/" title="Overview">
       {overviewContent}
     </EntityLayout.Route>

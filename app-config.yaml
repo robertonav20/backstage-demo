@@ -84,29 +84,19 @@ catalog:
     - name: backstage-demo-group
       type: file
       target: ../../static/groups/backstage-demo.yaml
-    # Templates
-    - name: static-site
-      type: file
-      target: ../../static/templates/static-site/template.yaml
-    - name: static-site-pipeline
-      type: file
-      target: ../../static/templates/static-site-pipeline/template.yaml
+    # # Templates for debugging
+    # - name: static-site
+    #   type: file
+    #   target: ../../tools/gitlab/templates/static-site/template.yaml
+    # - name: static-site-pipeline
+    #   type: file
+    #   target: ../../tools/gitlab/templates/static-site-pipeline/template.yaml
 
-    # # Backstage example systems
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-systems.yaml
-
-    # # Backstage example organization groups
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme/org.yaml
-
-    # # The backstage demo deployment (this)
-    # - type: url
-    #   target: https://github.com/backstage/demo/blob/master/catalog-info.yaml
-
-    # Demo Software Template
-    - type: file
-      target: ../../catalog-info.yaml
+    # Backstage example systems
+    - type: url
+      target: http://gitlab.local:8090/backstage-demo/templates/static-site/template.yaml
+    - type: url
+      target: http://gitlab.local:8090/backstage-demo/templates/static-site-pipeline/template.yaml
 
 
   providers:
@@ -166,7 +156,7 @@ jenkins:
   password: ${JENKINS_PASSWORD}
   crumbIssuerEnabled: ${JENKINS_CRUMB_ISSUER_ENABLED}
   projectCountLimit: 100
-  apiKey: ${JENKINS_PASSWORD}
+  apiKey: ${JENKINS_API_KEY}
 
 kubernetes:
   serviceLocatorMethod:

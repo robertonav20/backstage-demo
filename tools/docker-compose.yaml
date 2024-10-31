@@ -30,6 +30,16 @@ services:
     image: gitlab-image
     build:
       context: ./gitlab
+      args:
+        GITLAB_URL: ${GITLAB_URL}
+        GITLAB_USER: ${GITLAB_USER}
+        GITLAB_PASSWORD: ${GITLAB_PASSWORD}
+        GITLAB_GROUP: ${GITLAB_GROUP}
+        GITLAB_API_KEY: ${GITLAB_API_KEY}
+        GITLAB_CLIENT_ID: ${GITLAB_CLIENT_ID}
+        GITLAB_CLIENT_SECRET: ${GITLAB_CLIENT_SECRET}
+        GITLAB_SCRIPTS_DIR: ${GITLAB_SCRIPTS_DIR}
+        GITLAB_TEMPLATES_DIR: ${GITLAB_TEMPLATES_DIR}
     privileged: true
     depends_on:
       - postgres
@@ -116,6 +126,7 @@ services:
       args:
         GITLAB_USER: ${GITLAB_USER}
         GITLAB_PASSWORD: ${GITLAB_PASSWORD}
+        GITLAB_API_KEY: ${GITLAB_API_KEY}
         JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
         JENKINS_ADMIN_USER: ${JENKINS_ADMIN_USER}
         JENKINS_FOLDER: ${JENKINS_FOLDER}

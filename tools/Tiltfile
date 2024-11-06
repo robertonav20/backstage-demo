@@ -94,6 +94,11 @@ docker_build(
     build_args = BUILD_ARGS,
 )
 docker_build(
+    ref = 'gitlab-runner-image',
+    context = './gitlab-runner',
+    build_args = BUILD_ARGS,
+)
+docker_build(
     ref ='jenkins-image',
     context = './jenkins',
     build_args = BUILD_ARGS
@@ -102,6 +107,7 @@ docker_build(
 docker_compose( configPaths = './docker-compose.yaml')
 
 dc_resource(name = 'gitlab', labels = ['Services'])
+dc_resource(name = 'gitlab-runner', labels = ['Services'])
 dc_resource(name = 'jenkins', labels = ['Services'])
 dc_resource(name = 'postgres', labels = ['Services'])
 dc_resource(name = 'redis', labels = ['Services'])

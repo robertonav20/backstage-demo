@@ -78,7 +78,7 @@ spec:
                     <userRemoteConfigs>
                         <hudson.plugins.git.UserRemoteConfig>
                             <url>${{ steps.publish.output.remoteUrl }}</url>
-                            <credentialsId>${{ parameters.jenkinsGitlabCredentials }}</credentialsId>
+                            <credentialsId>gitlab-credentials</credentialsId>
                         </hudson.plugins.git.UserRemoteConfig>
                     </userRemoteConfigs>
                     <branches>

@@ -16,65 +16,6 @@ spec:
         This section will ask for details about the Owner and Repository name which will then be used
         to create a repository in that location using your GitHub credentials.
       properties:
-        jenksinsFileContent:
-          title: Jenkins File Content
-          type: string
-          description: Jenkins file content will be created and attached to repository
-          ui:autofocus: true
-          ui:widget: textarea
-          ui:options:
-            rows: 20
-          default: |
-            pipeline {
-              agent any
-              environment {
-                  REGISTRY_URL = 'http://gitlab.local:5050'
-                  IMAGE_NAME = 'gitlab.local:5050/backstage-demo/static-site-pipeline:latest'
-              }
-              stages {
-                stage('Docker version') {
-                  steps {
-                    echo "Printing docker version"
-                    sh 'docker version'
-                  }
-                }
-                stage('Docker login') {
-                  steps {
-                    withCredentials([usernamePassword(credentialsId: 'gitlab-credentials', usernameVariable: 'GITLAB_USER', passwordVariable: 'GITLAB_TOKEN')]) {
-                      sh ('echo ${GITLAB_TOKEN} | docker login -u ${GITLAB_USER} --password-stdin ${REGISTRY_URL}')
-                    }
-                  }
-                }
-                stage('Build') {
-                  steps {
-                    echo "Building app"
-                    sh('docker build -t ${IMAGE_NAME} .')
-                  }
-                }
-                stage('Publish') {
-                  steps {
-                    echo "Publishing image"
-                    sh ('docker push ${IMAGE_NAME}')
-                  }
-                }
-                stage('Docker logout') {
-                  steps {
-                    echo "Logout from registry url ${REGISTRY_URL}"
-                    sh ('docker logout ${REGISTRY_URL}')
-                  }
-                }
-              }
-            }
-        jenksinsFilePath:
-          title: Jenkins File Path
-          type: string
-          description: Jenkins file path
-          default: ./Jenkinsfile
-        jenkinsGitlabCredentials:
-          title: Jenkins Gitlab Credentials Id
-          type: string
-          description: Jenkins credentials id configured on jenkins instance
-          default: gitlab-credentials
         repoUrl:
           title: Enter an Owner and Repository Name
           description: |
@@ -100,7 +41,7 @@ spec:
       name: Create File
       action: roadiehq:utils:fs:write
       input:
-        path: ${{ parameters.jenksinsFilePath }}
+        path: ./Jenkinsfile
         content: ${{ parameters.jenksinsFileContent }}
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -144,7 +85,7 @@ spec:
                     <userRemoteConfigs>
                         <hudson.plugins.git.UserRemoteConfig>
                             <url>${{ steps.publish.output.remoteUrl }}</url>
-                            <credentialsId>${{ parameters.jenkinsGitlabCredentials }}</credentialsId>
+                            <credentialsId>gitlab-credentials</credentialsId>
                         </hudson.plugins.git.UserRemoteConfig>
                     </userRemoteConfigs>
                     <branches>

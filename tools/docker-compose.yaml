@@ -116,6 +116,29 @@ services:
       - gitlab_data:/var/opt/gitlab
       - gitlab_container_storage:/opt/gitlab/etc/registry/storage
 
+  gitlab-runner:
+    hostname: gitlab-runner
+    container_name: gitlab-runner
+    image: gitlab-runner-image
+    build:
+      context: ./gitlab-runner
+      args:
+        GITLAB_URL: ${GITLAB_URL}
+        GITLAB_API_KEY: ${GITLAB_API_KEY}
+    privileged: true
+    group_add:
+        - 984
+    depends_on:
+      - gitlab
+    volumes:
+      - gitlab_runner_config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+    environment:
+      CI_SERVER_URL: ${GITLAB_URL}
+      REGISTRATION_TOKEN: ${GITLAB_API_KEY}  # Replace with actual token
+    restart: always
+
   jenkins:
     hostname: jenkins.local
     container_name: jenkins
@@ -150,5 +173,6 @@ volumes:
   gitlab_container_storage:
   gitlab_data:
   gitlab_logs:
+  gitlab_runner_config:
   jenkins_home:
   postgres_data:

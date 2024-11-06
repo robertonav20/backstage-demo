@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    environment {
+        REGISTRY_URL = 'http://gitlab.local:5050'
+        BASE_IMAGE = 'gitlab.local:5050/backstage-demo/static-site-pipeline'
+        BUILD_DATE = new Date().format("yyyyMMdd-HHmmss") // Generate timestamp
+        IMAGE_NAME = "${BASE_IMAGE}:${BUILD_DATE}"
+    }
+    stages {
+    stage('Docker version') {
+        steps {
+        echo "Printing docker version"
+        sh 'docker version'
+        }
+    }
+    stage('Docker login') {
+        steps {
+        withCredentials([usernamePassword(credentialsId: 'gitlab-credentials', usernameVariable: 'GITLAB_USER', passwordVariable: 'GITLAB_TOKEN')]) {
+            sh ('echo ${GITLAB_TOKEN} | docker login -u ${GITLAB_USER} --password-stdin ${REGISTRY_URL}')
+        }
+        }
+    }
+    stage('Build') {
+        steps {
+        echo "Building app"
+        sh('docker build -t ${IMAGE_NAME} .')
+        }
+    }
+    stage('Publish') {
+        steps {
+        echo "Publishing image"
+        sh ('docker push ${IMAGE_NAME}')
+        }
+    }
+    stage('Docker logout') {
+        steps {
+        echo "Logout from registry url ${REGISTRY_URL}"
+        sh ('docker logout ${REGISTRY_URL}')
+        }
+    }
+    }
+}

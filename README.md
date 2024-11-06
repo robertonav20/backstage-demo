@@ -22,6 +22,7 @@ yarn dev
 
 ```sh
 echo "127.0.0.1 gitlab-local" | sudo tee -a /etc/hosts
+echo "127.0.0.1 gitlab-runner" | sudo tee -a /etc/hosts
 echo "127.0.0.1 jenkins-local" | sudo tee -a /etc/hosts
 ```
 

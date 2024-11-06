@@ -1,0 +1,12 @@
+[[runners]]
+  name = "docker-runner"
+  url = "GITLAB_URL"
+  token = "GITLAB_API_KEY"
+  executor = "docker"
+  [runners.docker]
+    image = "alpine:latest"
+    privileged = true
+    volumes = ["/cache", "/var/run/docker.sock:/var/run/docker.sock"]
+  [runners.cache]
+    path = "/cache"
+    shared = true

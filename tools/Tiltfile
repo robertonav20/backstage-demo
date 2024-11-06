@@ -5,6 +5,7 @@ GITLAB_USER_KEY = 'GITLAB_USER'
 GITLAB_PASSWORD_KEY = 'GITLAB_PASSWORD'
 GITLAB_GROUP_KEY = 'GITLAB_GROUP'
 GITLAB_API_KEY_KEY = 'GITLAB_API_KEY'
+GITLAB_RUNNER_API_KEY_KEY = 'GITLAB_RUNNER_API_KEY'
 GITLAB_CLIENT_ID_KEY = 'GITLAB_CLIENT_ID'
 GITLAB_CLIENT_SECRET_KEY = 'GITLAB_CLIENT_SECRET'
 GITLAB_SCRIPTS_DIR_KEY = 'GITLAB_SCRIPTS_DIR'
@@ -93,11 +94,11 @@ docker_build(
     context = './gitlab',
     build_args = BUILD_ARGS,
 )
-docker_build(
-    ref = 'gitlab-runner-image',
-    context = './gitlab-runner',
-    build_args = BUILD_ARGS,
-)
+# docker_build(
+#     ref = 'gitlab-runner-image',
+#     context = './gitlab-runner',
+#     build_args = BUILD_ARGS,
+# )
 docker_build(
     ref ='jenkins-image',
     context = './jenkins',

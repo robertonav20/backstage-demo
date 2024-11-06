@@ -125,11 +125,13 @@ services:
       args:
         GITLAB_URL: ${GITLAB_URL}
         GITLAB_API_KEY: ${GITLAB_API_KEY}
+        GITLAB_SCRIPTS_DIR: ${GITLAB_SCRIPTS_DIR}
     privileged: true
     group_add:
         - 984
     depends_on:
-      - gitlab
+      gitlab:
+        condition: service_healthy
     volumes:
       - gitlab_runner_config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock

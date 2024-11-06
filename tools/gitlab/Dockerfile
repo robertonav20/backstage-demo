@@ -1,6 +1,6 @@
 FROM gitlab/gitlab-ce:17.5.0-ce.0
 
-RUN apt-get update && apt-get install -qyy jq
+RUN apt-get update && apt-get install -qyy jq && rm -rf /var/lib/apt/lists/*
 
 ARG GITLAB_HOST=gitlab-local
 ARG GITLAB_URL=http://gitlab-local
@@ -24,11 +24,11 @@ ENV GITLAB_CLIENT_SECRET=$GITLAB_CLIENT_SECRET
 ENV GITLAB_SCRIPTS_DIR=$GITLAB_SCRIPTS_DIR
 ENV GITLAB_TEMPLATES_DIR=$GITLAB_TEMPLATES_DIR
 
-RUN mkdir -p $GITLAB_TEMPLATES_DIR
+RUN mkdir -p "$GITLAB_TEMPLATES_DIR"
 
 COPY ./gitlab-startup.sh $GITLAB_SCRIPTS_DIR
 COPY ./gitlab-templates.sh $GITLAB_SCRIPTS_DIR
 COPY ./templates $GITLAB_TEMPLATES_DIR
 
-RUN chmod +xr $GITLAB_SCRIPTS_DIR/gitlab-startup.sh
-RUN chmod +xr $GITLAB_SCRIPTS_DIR/gitlab-templates.sh
+RUN chmod +xr "$GITLAB_SCRIPTS_DIR"/gitlab-startup.sh && \
+    chmod +xr "$GITLAB_SCRIPTS_DIR"/gitlab-templates.sh

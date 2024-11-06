@@ -16,7 +16,8 @@ RUN jenkins-plugin-cli --plugins \
 # Install packages
 USER root
 
-RUN apt-get update && apt-get install -qyy \
+RUN apt-get update && \
+    apt-get install -qyy \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -24,8 +25,8 @@ RUN apt-get update && apt-get install -qyy \
     maven \
     nodejs \
     npm \
-    software-properties-common \
-    && rm -rf /var/lib/apt/lists/*
+    software-properties-common && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN npm install --global yarn npx
 

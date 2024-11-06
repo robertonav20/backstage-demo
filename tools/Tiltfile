@@ -94,11 +94,11 @@ docker_build(
     context = './gitlab',
     build_args = BUILD_ARGS,
 )
-# docker_build(
-#     ref = 'gitlab-runner-image',
-#     context = './gitlab-runner',
-#     build_args = BUILD_ARGS,
-# )
+docker_build(
+    ref = 'gitlab-runner-image',
+    context = './gitlab-runner',
+    build_args = BUILD_ARGS,
+)
 docker_build(
     ref ='jenkins-image',
     context = './jenkins',

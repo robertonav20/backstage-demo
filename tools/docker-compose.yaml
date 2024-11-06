@@ -129,17 +129,15 @@ services:
     privileged: true
     group_add:
         - 984
-    depends_on:
-      gitlab:
-        condition: service_healthy
+    entrypoint: ["/bin/bash", "/scripts/gitlab-runner-startup.sh"]
     volumes:
       - gitlab_runner_config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
-    environment:
-      CI_SERVER_URL: ${GITLAB_URL}
-      REGISTRATION_TOKEN: ${GITLAB_API_KEY}  # Replace with actual token
     restart: always
+    depends_on:
+      gitlab:
+        condition: service_healthy
 
   jenkins:
     hostname: jenkins.local

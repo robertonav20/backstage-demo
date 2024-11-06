@@ -66,7 +66,6 @@ cat <<EOF | tee -a /etc/gitlab-runner/config.toml -
         image = "alpine:latest"
         privileged = true
         tls_verify = false
-        network_mode = "host"
         volumes = ["/cache", "/var/run/docker.sock:/var/run/docker.sock"]
     [runners.cache]
         path = "/cache"

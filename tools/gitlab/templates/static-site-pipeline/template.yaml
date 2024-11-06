@@ -16,6 +16,16 @@ spec:
         This section will ask for details about the Owner and Repository name which will then be used
         to create a repository in that location using your GitHub credentials.
       properties:
+        cicdProvider:
+          title: Select CI/CD Provider
+          type: string
+          default: gitlab
+          enum:
+            - gitlab
+            - jenkins
+          enumNames:
+            - 'Gitlab'
+            - 'Jenkins'
         repoUrl:
           title: Enter an Owner and Repository Name
           description: |
@@ -37,12 +47,7 @@ spec:
             - Repo URL: ${{ parameters.repoUrl }}
             - Owner: ${{ (parameters.repoUrl | parseRepoUrl).owner }}
             - Repo: ${{ (parameters.repoUrl | parseRepoUrl).repo }}
-    - id: writeFile
-      name: Create File
-      action: roadiehq:utils:fs:write
-      input:
-        path: ./Jenkinsfile
-        content: ${{ parameters.jenksinsFileContent }}
+            - CI/CD: ${{ (parameters.cicdProvider }}
     - id: fetch-skeleton
       name: Fetch Skeleton
       action: fetch:template
@@ -53,6 +58,13 @@ spec:
           description: 'Static site component'
           owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
           repo: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+          cicdProvider: ${{ parameters.cicdProvider }}
+    - id: configure-cicd
+      name: Configure CI-CD
+      action: fs:delete
+      input:
+          files:
+            - ${{ '.gitlab-ci.yml' if parameters.cicdProvider === 'jenkins' else 'Jenkinsfile' }}
     - id: publish
       name: Publish
       action: publish:gitlab
@@ -63,6 +75,7 @@ spec:
         defaultBranch: main
         description: Repository Created by Demo template
     - id: jenkins-job-create
+      if: ${{ parameters.cicdProvider === "jenkins" }}
       name: Jenkins Job Create
       action: jenkins:job:create
       input:
@@ -104,6 +117,7 @@ spec:
             <disabled>false</disabled>
           </flow-definition>
     - id: jenkins-job-build
+      if: ${{ parameters.cicdProvider === "jenkins" }}
       name: Jenkins Job Build
       action: jenkins:job:build
       input:
@@ -120,3 +134,4 @@ spec:
         title: "Gitlab Repository"
       - url: http://jenkins-local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
         title: "Jenkins Job"
+

@@ -3,14 +3,48 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: static-site-pipeline-template
-  title: Static Site Pipeline Template
+  name: spring-boot-application-template
+  title: Spring Boot Application Template
   description: |
-    This template will create a simple static site app repository under owner folder/group and a related job jenkins with under the same folder.
-    You will obtain button links after job execution
+    This template will create a simple spring boot application.
 spec:
   type: website
   parameters:
+    - title: Application Parameters
+      properties:
+        appName:
+          title: Application name
+          type: string
+          default: Hello World Service
+          ui:autofocus: true
+        groupId:
+          title: Artifact Group Id
+          type: string
+          default: com.backstage.demo
+          pattern: '^\w+(\.[\w\d]*)*$'
+        artifactId:
+          title: Artifact Id
+          type: string
+          default: hello-world-service
+        packageName:
+          title: Package name should be (com.example.application)
+          type: string
+          default: com.backstage.demo
+          pattern: '^\w+(\.[\w\d]*)*$'
+        packageNameFolder:
+          title: Package name folder should be (com/example/application)
+          type: string
+          default: com/backstage/demo
+          pattern: '^\w+(\/\w*)*$'
+        apiPrefix:
+          title: Api prefix
+          type: string
+          default: /api/v1
+          pattern: '^\/\w+(\/[\w\d-]*)*$'
+        serverPort:
+          title: Server port
+          type: number
+          default: 8080
     - title: Choose a location
       description: |
         This section will ask for details about the Owner and Repository name which will then be used
@@ -44,11 +78,20 @@ spec:
       input:
         url: ./content
         values:
+          # Catalog Parameters
           component_id: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
           description: 'Static site component'
           owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
           repo: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
           cicdProvider: ${{ parameters.cicdProvider }}
+          # Application Parameters
+          appName: ${{ parameters.appName }}
+          groupId: ${{ parameters.groupId }}
+          artifactId: ${{ parameters.artifactId }}
+          packageName: ${{ parameters.packageName }}
+          packageNameFolder: ${{ parameters.packageNameFolder }}
+          apiPrefix: ${{ parameters.apiPrefix }}
+          serverPort: ${{ parameters.serverPort }}
     - id: configure-cicd
       name: Configure CI-CD
       action: fs:delete
@@ -117,7 +160,13 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog-info.yaml"
+        catalogInfoPath: "/catalog.yaml"
+    - id: register
+      name: Register API
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/api.yaml"
   output:
     links:
       - url: ${{ steps.publish.output.repoContentsUrl }}

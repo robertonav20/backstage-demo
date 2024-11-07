@@ -1,10 +1,18 @@
 import React from 'react';
 import { Navigate, Route } from 'react-router-dom';
-import { apiDocsPlugin, ApiExplorerPage } from '@backstage/plugin-api-docs';
+import {
+  apiDocsPlugin,
+  ApiExplorerPage,
+  EntityApiDefinitionCard,
+  EntityConsumingComponentsCard,
+  EntityProvidingComponentsCard
+} from '@backstage/plugin-api-docs';
 import {
   CatalogEntityPage,
   CatalogIndexPage,
   catalogPlugin,
+  EntityAboutCard,
+  EntityLayout,
 } from '@backstage/plugin-catalog';
 import {
   CatalogImportPage,
@@ -37,6 +45,7 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { gitlabAuthApiRef } from '@backstage/core-plugin-api';
+import { Grid } from '@material-ui/core';
 
 const app = createApp({
   apis,
@@ -75,6 +84,36 @@ const app = createApp({
     ),
   },
 });
+
+const apiPage = (
+  <EntityLayout>
+    <EntityLayout.Route path="/" title="Overview">
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <EntityAboutCard />
+        </Grid>
+        <Grid container>
+          <Grid item md={12}>
+            <Grid item xs={12} md={6}>
+              <EntityProvidingComponentsCard />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <EntityConsumingComponentsCard />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/definition" title="Definition">
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <EntityApiDefinitionCard />
+        </Grid>
+      </Grid>
+    </EntityLayout.Route>
+  </EntityLayout>
+);
 
 const routes = (
   <FlatRoutes>

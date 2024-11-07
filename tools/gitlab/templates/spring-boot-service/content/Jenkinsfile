@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         REGISTRY_URL = 'http://gitlab.local:5050'
-        BASE_IMAGE = 'gitlab.local:5050/backstage-demo/static-site-pipeline'
+        BASE_IMAGE = 'gitlab.local:5050/backstage-demo/${{ values.artifactId }}'
         BUILD_DATE = new Date().format("yyyyMMdd-HHmmss") // Generate timestamp
         IMAGE_NAME = "${BASE_IMAGE}:${BUILD_DATE}"
     }
@@ -23,6 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building app"
+                sh('mvn package -B')
                 sh('docker build -t ${IMAGE_NAME} .')
             }
         }

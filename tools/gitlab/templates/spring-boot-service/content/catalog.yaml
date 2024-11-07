@@ -7,10 +7,13 @@ metadata:
   {%- endif %}
   annotations:
     github.com/project-slug: ${{values.owner + "/" + values.repo}}
+    backstage.io/techdocs-ref: dir:.
     {%- if values.cicdProvider === 'jenkins' %}
     'jenkins.io/job-full-name': ${{values.owner + "/" + values.repo}}
     {%- endif %}
 spec:
-  type: website
+  type: service
   lifecycle: experimental
   owner: group:default/${{values.owner}}
+  providesApis:
+    - ${{values.component_id}}

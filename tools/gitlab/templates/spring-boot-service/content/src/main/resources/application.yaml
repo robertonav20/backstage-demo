@@ -1,0 +1,19 @@
+server:
+  port: ${{values.serverPort}}
+
+# swagger-ui custom path
+springdoc:
+  show-actuator: true
+  packagesToScan: ${{values.packageName}}
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+    path: /api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

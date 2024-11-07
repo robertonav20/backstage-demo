@@ -1,6 +1,40 @@
 app:
   title: Backstage Demo
   baseUrl: http://localhost:3000
+  experimental:
+    # Auto discovering all plugins extensions
+    packages: all
+  extensions:
+    # Enabling some entity cards
+    # The cards will be displayed in the same order it appears in this setting list
+    # Shows a table of components that provides a particular api
+    - entity-card:api-docs/providing-components:
+        config:
+          # Presenting the card ony for entites of kind api
+          filter: kind:component
+    # Shows a table of components that consumes a particular api
+    - entity-card:api-docs/consuming-components:
+        config:
+          # Presenting the card ony for entites of kind api
+          filter: kind:component
+    # Enabling some contents
+    # The contents will be displayed in the same order it appears in this setting list
+    # Shows a "Definition" tab for entities of kind api
+    - entity-content:api-docs/definition:
+        config:
+          # A text-based query used to filter whether the entity contentextension should be rendered or not.
+          # For more information about entity cards filters, check out this pull request
+          # https://github.com/backstage/backstage/pull/21480
+          # defaults to 'kind:component'
+          filter: 'kind:component'
+    # Shows an "Apis" tab for entities of kind component
+    - entity-content:api-docs/apis:
+        config:
+          # A text-based query used to filter whether the entity contentextension should be rendered or not.
+          # For more information about entity cards filters, check out this pull request
+          # https://github.com/backstage/backstage/pull/21480
+          # defaults to 'kind:component'
+          filter: 'kind:component'
   support:
     url: https://github.com/backstage/backstage/issues
     items:
@@ -94,10 +128,9 @@ catalog:
 
     # Backstage example systems
     - type: url
-      target: ${GITLAB_BASE_URL}/backstage-demo/templates/static-site/-/blob/main/template.yaml
+      target: ${GITLAB_BASE_URL}/backstage-demo/templates/spring-boot-service/-/blob/main/template.yaml
     - type: url
       target: ${GITLAB_BASE_URL}/backstage-demo/templates/static-site-pipeline/-/blob/main/template.yaml
-
 
   providers:
     gitlab:

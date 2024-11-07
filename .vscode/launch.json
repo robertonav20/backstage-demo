@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Start App",
+      "name": "App",
       "type": "node",
       "request": "launch",
       "args": [
@@ -39,7 +39,7 @@
       "console": "integratedTerminal"
     },
     {
-      "name": "Start Backend",
+      "name": "Backend",
       "type": "node",
       "request": "launch",
       "args": [

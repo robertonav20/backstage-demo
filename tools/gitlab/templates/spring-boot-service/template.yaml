@@ -48,7 +48,7 @@ spec:
     - title: Choose a location
       description: |
         This section will ask for details about the Owner and Repository name which will then be used
-        to create a repository in that location using your GitHub credentials.
+        to create a repository in that location using your Gitlab credentials.
       properties:
         cicdProvider:
           title: Select CI/CD Provider
@@ -63,11 +63,11 @@ spec:
         repoUrl:
           title: Enter an Owner and Repository Name
           description: |
-            The Owner should be your GitHub username. The Repository name should be a name that is not one that exists already in your GitHub account.
+            The Owner should be your Gitlab username. The Repository name should be a name that is not one that exists already in your Gitlab account.
           type: string
           ui:autofocus: true
           ui:field: RepoUrlPicker
-          default: gitlab-local?owner=backstage-demo&repo=static-site-pipeline
+          default: gitlab-local?owner=backstage-demo&repo=spring-boot-service
           ui:options:
             allowedHosts:
               - gitlab-local
@@ -80,9 +80,10 @@ spec:
         values:
           # Catalog Parameters
           component_id: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
-          description: 'Static site component'
+          description: 'Hello World Service'
           owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
           repo: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+          repoUrl: ${{ parameters.repoUrl }}
           cicdProvider: ${{ parameters.cicdProvider }}
           # Application Parameters
           appName: ${{ parameters.appName }}
@@ -171,8 +172,6 @@ spec:
     links:
       - url: ${{ steps.publish.output.repoContentsUrl }}
         title: "Gitlab Repository"
-      {%- if parameters.cicdProvider === 'jenkins' %}
       - url: http://jenkins-local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
         title: "Jenkins Job"
-      {%- endif %}
 

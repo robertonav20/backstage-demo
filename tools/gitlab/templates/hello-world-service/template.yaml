@@ -3,10 +3,10 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: spring-boot-application-template
-  title: Spring Boot Application Template
+  name: hello-world-service-template
+  title: Hello World Service Application Template
   description: |
-    This template will create a simple spring boot application.
+    This template will create a hello world service application with spring boot application.
 spec:
   type: website
   parameters:
@@ -46,9 +46,6 @@ spec:
           type: number
           default: 8080
     - title: Choose a location
-      description: |
-        This section will ask for details about the Owner and Repository name which will then be used
-        to create a repository in that location using your Gitlab credentials.
       properties:
         cicdProvider:
           title: Select CI/CD Provider
@@ -67,7 +64,7 @@ spec:
           type: string
           ui:autofocus: true
           ui:field: RepoUrlPicker
-          default: gitlab-local?owner=backstage-demo&repo=spring-boot-service
+          default: gitlab-local?owner=backstage-demo&repo=hello-world-service
           ui:options:
             allowedHosts:
               - gitlab-local

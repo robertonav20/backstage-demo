@@ -122,6 +122,7 @@ spec:
     links:
       - url: ${{ steps.publish.output.repoContentsUrl }}
         title: "Gitlab Repository"
-      - url: http://jenkins-local:8080/job/${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/job/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
-        title: "Jenkins Job"
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
 

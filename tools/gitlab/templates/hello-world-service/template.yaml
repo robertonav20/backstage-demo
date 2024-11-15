@@ -153,13 +153,13 @@ spec:
       action: jenkins:job:build
       input:
         jobName: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
-    - id: register
+    - id: register-component
       name: Register Component
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: "/catalog.yaml"
-    - id: register
+    - id: register-api
       name: Register API
       action: catalog:register
       input:
@@ -169,7 +169,10 @@ spec:
     links:
       - url: ${{ steps.publish.output.repoContentsUrl }}
         title: "Gitlab Repository"
-      - title: Open in catalog
-        icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
+      - title: Open Component in catalog
+        icon: catalog-component
+        entityRef: ${{ steps.register-component.output.entityRef }}
+      - title: Open API in catalog
+        icon: catalog-api
+        entityRef: ${{ steps.register-api.output.entityRef }}
 

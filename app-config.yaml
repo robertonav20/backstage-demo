@@ -128,7 +128,7 @@ catalog:
 
     # Backstage example systems
     - type: url
-      target: ${GITLAB_BASE_URL}/backstage-demo/templates/spring-boot-service/-/blob/main/template.yaml
+      target: ${GITLAB_BASE_URL}/backstage-demo/templates/hello-world-service/-/blob/main/template.yaml
     - type: url
       target: ${GITLAB_BASE_URL}/backstage-demo/templates/static-site-pipeline/-/blob/main/template.yaml
 

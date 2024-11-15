@@ -8,7 +8,6 @@ import {
   RELATION_PART_OF,
   RELATION_PROVIDES_API,
 } from '@backstage/catalog-model';
-import { EmptyState } from '@backstage/core-components';
 import {
   EntityApiDefinitionCard,
   EntityConsumedApisCard,
@@ -48,7 +47,7 @@ import {
   EntityUserProfileCard,
 } from '@backstage/plugin-org';
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
-import { Button, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import React from 'react';
 
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
@@ -61,6 +60,20 @@ import {
 import {
   EntityJenkinsContent,
 } from '@backstage-community/plugin-jenkins';
+
+import {
+    isGitlabAvailable,
+    EntityGitlabContent,
+    EntityGitlabCoverageCard,
+    EntityGitlabLanguageCard,
+    EntityGitlabIssuesTable,
+    EntityGitlabMergeRequestsTable,
+    EntityGitlabMergeRequestStatsCard,
+    EntityGitlabPeopleCard,
+    EntityGitlabPipelinesTable,
+    EntityGitlabReadmeCard,
+    EntityGitlabReleasesCard,
+} from '@immobiliarelabs/backstage-plugin-gitlab';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -132,6 +145,37 @@ const overviewContent = (
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
+      <EntitySwitch>
+        <EntitySwitch.Case if={isGitlabAvailable}>
+          <Grid item md={12}>
+              <EntityGitlabReadmeCard />
+          </Grid>
+          <Grid item sm={12} md={3} lg={3}>
+              <EntityGitlabPeopleCard />
+          </Grid>
+          <Grid item sm={12} md={3} lg={3}>
+              <EntityGitlabLanguageCard />
+          </Grid>
+          <Grid item sm={12} md={3} lg={3}>
+              <EntityGitlabCoverageCard />
+          </Grid>
+          <Grid item sm={12} md={3} lg={3}>
+              <EntityGitlabMergeRequestStatsCard />
+          </Grid>
+          <Grid item sm={12} md={3} lg={3}>
+              <EntityGitlabReleasesCard />
+          </Grid>
+          <Grid item md={12}>
+              <EntityGitlabPipelinesTable />
+          </Grid>
+          <Grid item md={12}>
+              <EntityGitlabMergeRequestsTable />
+          </Grid>
+          <Grid item md={12}>
+              <EntityGitlabIssuesTable />
+          </Grid>
+        </EntitySwitch.Case>
+      </EntitySwitch>
   </Grid>
 );
 
@@ -169,6 +213,12 @@ const serviceEntityPage = (
           <EntityDependsOnResourcesCard variant="gridItem" />
         </Grid>
       </Grid>
+    </EntityLayout.Route>
+      <EntityLayout.Route
+        if={isGitlabAvailable}
+        path="/gitlab"
+        title="Gitlab">
+      <EntityGitlabContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/docs" title="Docs">

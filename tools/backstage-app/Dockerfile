@@ -14,6 +14,7 @@ COPY --from=builder /app ./
 RUN npm i -g @backstage/cli@0.27.1
 
 ADD ./app-config.yaml ./app-config.yaml
+COPY ./packages/app/public ./public
 COPY ./packages/app/src ./src
 
 EXPOSE 3000

@@ -42,7 +42,7 @@ spec:
       name: Fetch Skeleton
       action: fetch:template
       input:
-        url: ./content
+        url: ./skeleton
         values:
           component_id: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
           description: 'Static site component'
@@ -53,13 +53,13 @@ spec:
       name: Configure CI-CD
       action: fs:delete
       input:
-          files:
-            - ${{ '.gitlab-ci.yml' if parameters.cicdProvider === 'jenkins' else 'Jenkinsfile' }}
+        files:
+          - ${{ '.gitlab-ci.yml' if parameters.cicdProvider === 'jenkins' else 'Jenkinsfile' }}
     - id: publish
       name: Publish
       action: publish:gitlab
       input:
-        allowedHosts: ["gitlab-local"]
+        allowedHosts: ['gitlab-local']
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
         defaultBranch: main
@@ -117,12 +117,11 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog.yaml"
+        catalogInfoPath: '/catalog.yaml'
   output:
     links:
       - url: ${{ steps.publish.output.repoContentsUrl }}
-        title: "Gitlab Repository"
+        title: 'Gitlab Repository'
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
-

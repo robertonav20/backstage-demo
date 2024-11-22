@@ -1,6 +1,6 @@
 app:
   title: Backstage Demo
-  baseUrl: http://localhost:3000
+  baseUrl: http://0.0.0.0:3000
   experimental:
     # Auto discovering all plugins extensions
     packages: all
@@ -86,8 +86,8 @@ backend:
 integrations:
   gitlab:
     - host: ${GITLAB_HOST}
-      token: ${GITLAB_TOKEN}
-      baseUrl: ${GITLAB_BASE_URL}
+      token: ${GITLAB_API_KEY}
+      baseUrl: ${GITLAB_URL}
       apiBaseUrl: ${GITLAB_API_BASE_URL}
 
 auth:
@@ -97,9 +97,9 @@ auth:
       userEntityRef: user:default/guest
     gitlab:
       development:
-        clientId: ${GITLAB_DEVELOPMENT_CLIENT_ID}
-        clientSecret: ${GITLAB_DEVELOPMENT_CLIENT_SECRET}
-        audience: ${GITLAB_BASE_URL}
+        clientId: ${GITLAB_CLIENT_ID}
+        clientSecret: ${GITLAB_CLIENT_SECRET}
+        audience: ${GITLAB_URL}
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
@@ -113,24 +113,19 @@ catalog:
     # Users
     - name: backstage-demo-user
       type: file
-      target: ../../static/users/backstage-demo.yaml
+      target: ./static/users/backstage-demo.yaml
     # Groups
     - name: backstage-demo-group
       type: file
-      target: ../../static/groups/backstage-demo.yaml
-    # # Templates for debugging
-    # - name: static-site
-    #   type: file
-    #   target: ../../tools/gitlab/templates/static-site/template.yaml
-    # - name: static-site-pipeline
-    #   type: file
-    #   target: ../../tools/gitlab/templates/static-site-pipeline/template.yaml
+      target: ./static/groups/backstage-demo.yaml
 
     # Backstage example systems
     - type: url
-      target: ${GITLAB_BASE_URL}/backstage-demo/templates/hello-world-service/-/blob/main/template.yaml
+      target: ${GITLAB_URL}/backstage-demo/templates/hello-world-app/-/blob/main/template.yaml
     - type: url
-      target: ${GITLAB_BASE_URL}/backstage-demo/templates/static-site-pipeline/-/blob/main/template.yaml
+      target: ${GITLAB_URL}/backstage-demo/templates/hello-world-service/-/blob/main/template.yaml
+    - type: url
+      target: ${GITLAB_URL}/backstage-demo/templates/static-site-pipeline/-/blob/main/template.yaml
 
   providers:
     gitlab:
@@ -185,8 +180,8 @@ techdocs:
 
 jenkins:
   baseUrl: ${JENKINS_BASE_URL}
-  username: ${JENKINS_USERNAME}
-  password: ${JENKINS_PASSWORD}
+  username: ${JENKINS_ADMIN_USER}
+  password: ${JENKINS_ADMIN_PASSWORD}
   crumbIssuerEnabled: ${JENKINS_CRUMB_ISSUER_ENABLED}
   projectCountLimit: 100
   apiKey: ${JENKINS_API_KEY}

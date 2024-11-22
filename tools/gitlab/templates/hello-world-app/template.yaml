@@ -1,0 +1,74 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: hello-world-app
+  title: Hello World App
+  description: This template will create a hello world app application with react.
+  tags:
+    - react
+    - typescript
+spec:
+  type: website
+  parameters:
+    - title: Application Parameters
+      properties:
+        component_id:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:field: EntityNamePicker
+          default: hello-world-app
+        parentComponent:
+          title: Parent component dropdown
+          type: string
+          ui:field: EntityPicker
+          ui:options: {}
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Enter an Owner and Repository Name
+          description: |
+            The Owner should be your Gitlab username. The Repository name should be a name that is not one that exists already in your Gitlab account.
+          type: string
+          ui:autofocus: true
+          ui:field: RepoUrlPicker
+          default: gitlab-local?owner=backstage-demo&repo=hello-world-app
+          ui:options:
+            allowedHosts:
+              - gitlab-local
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          component_id: ${{ parameters.component_id }}
+          description: 'Hello World App'
+          parent_component: ${{ parameters.parentComponent }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
+    - id: publish
+      name: Publish
+      action: publish:gitlab
+      input:
+        allowedHosts: ['gitlab-local']
+        repoUrl: ${{ parameters.repoUrl }}
+        repoVisibility: public
+        defaultBranch: main
+        description: Repository Created by Demo template
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog.yaml'
+  output:
+    links:
+      - title: 'Gitlab Repository'
+        url: ${{ steps.publish.output.repoContentsUrl }}
+      - title: 'Catalog'
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}

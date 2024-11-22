@@ -1,5 +1,3 @@
-# yaml-language-server: $schema=https://json.schemastore.org/yamllint.json
-
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
@@ -7,8 +5,11 @@ metadata:
   title: Hello World Service Application Template
   description: |
     This template will create a hello world service application with spring boot application.
+  tags:
+    - spring
+    - java
 spec:
-  type: website
+  type: service
   parameters:
     - title: Application Parameters
       properties:
@@ -73,7 +74,7 @@ spec:
       name: Fetch Skeleton
       action: fetch:template
       input:
-        url: ./content
+        url: ./skeleton
         values:
           # Catalog Parameters
           component_id: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
@@ -94,13 +95,13 @@ spec:
       name: Configure CI-CD
       action: fs:delete
       input:
-          files:
-            - ${{ '.gitlab-ci.yml' if parameters.cicdProvider === 'jenkins' else 'Jenkinsfile' }}
+        files:
+          - ${{ '.gitlab-ci.yml' if parameters.cicdProvider === 'jenkins' else 'Jenkinsfile' }}
     - id: publish
       name: Publish
       action: publish:gitlab
       input:
-        allowedHosts: ["gitlab-local"]
+        allowedHosts: ['gitlab-local']
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
         defaultBranch: main
@@ -158,21 +159,17 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog.yaml"
+        catalogInfoPath: '/catalog.yaml'
     - id: register-api
       name: Register API
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/api.yaml"
+        catalogInfoPath: '/api.yaml'
   output:
     links:
-      - url: ${{ steps.publish.output.repoContentsUrl }}
-        title: "Gitlab Repository"
-      - title: Open Component in catalog
+      - title: 'Gitlab Repository'
+        url: ${{ steps.publish.output.repoContentsUrl }}
+      - title: 'Catalog'
         icon: catalog-component
         entityRef: ${{ steps.register-component.output.entityRef }}
-      - title: Open API in catalog
-        icon: catalog-api
-        entityRef: ${{ steps.register-api.output.entityRef }}
-

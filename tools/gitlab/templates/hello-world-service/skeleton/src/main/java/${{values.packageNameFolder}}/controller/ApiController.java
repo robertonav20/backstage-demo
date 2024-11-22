@@ -16,6 +16,6 @@ public class ApiController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello World";
+        return "Hello World from ${{ values.appName }}";
     }
 }

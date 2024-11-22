@@ -66,14 +66,7 @@ backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
 backend.add(gitlabPlugin);
 backend.add(catalogPluginGitlabFillerProcessorModule);
 
-// Jenkins
-backend.add(import('@backstage-community/plugin-jenkins-backend'));
-backend.add(import('@robertonav20/backstage-plugin-scaffolder-jenkins-actions'));
-
 // utils
 backend.add(import('@roadiehq/scaffolder-backend-module-utils/new-backend'));
-
-
-
 
 backend.start();

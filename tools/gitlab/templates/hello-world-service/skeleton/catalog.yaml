@@ -8,9 +8,6 @@ metadata:
   annotations:
     github.com/project-slug: ${{values.owner + "/" + values.repo}}
     backstage.io/techdocs-ref: dir:.
-    {%- if values.cicdProvider === 'jenkins' %}
-    'jenkins.io/job-full-name': ${{values.owner + "/" + values.repo}}
-    {%- endif %}
 spec:
   type: service
   lifecycle: experimental

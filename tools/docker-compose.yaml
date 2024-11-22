@@ -139,37 +139,8 @@ services:
       gitlab:
         condition: service_healthy
 
-  jenkins:
-    hostname: jenkins-local
-    container_name: jenkins
-    image: jenkins-image
-    build:
-      context: ./jenkins
-      dockerfile: Dockerfile
-      args:
-        GITLAB_USER: ${GITLAB_USER}
-        GITLAB_PASSWORD: ${GITLAB_PASSWORD}
-        GITLAB_API_KEY: ${GITLAB_API_KEY}
-        JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
-        JENKINS_ADMIN_USER: ${JENKINS_ADMIN_USER}
-        JENKINS_FOLDER: ${JENKINS_FOLDER}
-    group_add:
-        - 984
-    privileged: true
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
-    depends_on:
-      - gitlab
-
   backstage-app:
-    hostname: backstage-app-local
+    hostname: backstage-local
     container_name: backstage-app
     image: backstage-app-image
     build:
@@ -182,11 +153,6 @@ services:
       GITLAB_API_KEY: ${GITLAB_API_KEY}
       GITLAB_CLIENT_ID: ${GITLAB_CLIENT_ID}
       GITLAB_CLIENT_SECRET: ${GITLAB_CLIENT_SECRET}
-      JENKINS_BASE_URL: ${JENKINS_BASE_URL}
-      JENKINS_ADMIN_USER: ${JENKINS_ADMIN_USER}
-      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
-      JENKINS_API_KEY: ${JENKINS_API_KEY}
-      JENKINS_CRUMB_ISSUER_ENABLED: ${JENKINS_CRUMB_ISSUER_ENABLED}
       KUBERNETES_API_BASE_URL: ${KUBERNETES_API_BASE_URL}
       KUBERNETES_CLUSTER_NAME: ${KUBERNETES_CLUSTER_NAME}
       KUBERNETES_SKIP_TLS: ${KUBERNETES_SKIP_TLS}
@@ -200,7 +166,7 @@ services:
       - backstage_app_node_modules:/app/node_modules
 
   backstage-backend:
-    hostname: backstage-backend-local
+    hostname: backstage-local
     container_name: backstage-backend
     image: backstage-backend-image
     build:
@@ -213,11 +179,6 @@ services:
       GITLAB_API_KEY: ${GITLAB_API_KEY}
       GITLAB_CLIENT_ID: ${GITLAB_CLIENT_ID}
       GITLAB_CLIENT_SECRET: ${GITLAB_CLIENT_SECRET}
-      JENKINS_BASE_URL: ${JENKINS_BASE_URL}
-      JENKINS_ADMIN_USER: ${JENKINS_ADMIN_USER}
-      JENKINS_ADMIN_PASSWORD: ${JENKINS_ADMIN_PASSWORD}
-      JENKINS_API_KEY: ${JENKINS_API_KEY}
-      JENKINS_CRUMB_ISSUER_ENABLED: ${JENKINS_CRUMB_ISSUER_ENABLED}
       KUBERNETES_API_BASE_URL: ${KUBERNETES_API_BASE_URL}
       KUBERNETES_CLUSTER_NAME: ${KUBERNETES_CLUSTER_NAME}
       KUBERNETES_SKIP_TLS: ${KUBERNETES_SKIP_TLS}
@@ -225,6 +186,7 @@ services:
       KUBERNETES_CLIENT_CERTIFICATE_DATA: ${KUBERNETES_CLIENT_CERTIFICATE_DATA}
       KUBERNETES_CLIENT_KEY_DATA: ${KUBERNETES_CLIENT_KEY_DATA}
       NODE_OPTIONS: --no-node-snapshot
+      LOG_LEVEL: debug
     privileged: true
     ports:
       - "7007:7007"
@@ -237,7 +199,6 @@ volumes:
   gitlab_data:
   gitlab_logs:
   # gitlab_runner_config:
-  jenkins_home:
   postgres_data:
   backstage_app_node_modules:
   backstage_backend_node_modules:

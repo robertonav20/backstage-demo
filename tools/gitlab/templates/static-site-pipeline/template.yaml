@@ -6,8 +6,10 @@ metadata:
   name: static-site-pipeline-template
   title: Static Site Pipeline Template
   description: |
-    This template will create a simple static site app repository under owner folder/group and a related job jenkins with under the same folder.
+    This template will create a simple static site app repository under owner folder/group.
     You will obtain button links after job execution
+  tags:
+    - website
 spec:
   type: website
   parameters:
@@ -16,16 +18,6 @@ spec:
         This section will ask for details about the Owner and Repository name which will then be used
         to create a repository in that location using your GitHub credentials.
       properties:
-        cicdProvider:
-          title: Select CI/CD Provider
-          type: string
-          default: gitlab
-          enum:
-            - gitlab
-            - jenkins
-          enumNames:
-            - 'Gitlab'
-            - 'Jenkins'
         repoUrl:
           title: Enter an Owner and Repository Name
           description: |
@@ -48,13 +40,6 @@ spec:
           description: 'Static site component'
           owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
           repo: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
-          cicdProvider: ${{ parameters.cicdProvider }}
-    - id: configure-cicd
-      name: Configure CI-CD
-      action: fs:delete
-      input:
-        files:
-          - ${{ '.gitlab-ci.yml' if parameters.cicdProvider === 'jenkins' else 'Jenkinsfile' }}
     - id: publish
       name: Publish
       action: publish:gitlab
@@ -64,54 +49,6 @@ spec:
         repoVisibility: public
         defaultBranch: main
         description: Repository Created by Demo template
-    - id: jenkins-job-create
-      if: ${{ parameters.cicdProvider === "jenkins" }}
-      name: Jenkins Job Create
-      action: jenkins:job:create
-      input:
-        jobName: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
-        jobXml: |
-          <flow-definition plugin="workflow-job@1447.v559b_c710cd2e">
-            <actions/>
-            <description></description>
-            <keepDependencies>false</keepDependencies>
-            <properties>
-                <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.9.4">
-                    <gitLabConnection>gitlab</gitLabConnection>
-                    <jobCredentialId></jobCredentialId>
-                    <useAlternativeCredential>false</useAlternativeCredential>
-                </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
-            </properties>
-            <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@3975.v567e2a_1ffa_22">
-                <scm class="hudson.plugins.git.GitSCM" plugin="git@5.6.0">
-                    <configVersion>2</configVersion>
-                    <userRemoteConfigs>
-                        <hudson.plugins.git.UserRemoteConfig>
-                            <url>${{ steps.publish.output.remoteUrl }}</url>
-                            <credentialsId>gitlab-credentials</credentialsId>
-                        </hudson.plugins.git.UserRemoteConfig>
-                    </userRemoteConfigs>
-                    <branches>
-                        <hudson.plugins.git.BranchSpec>
-                          <name>*/main</name>
-                        </hudson.plugins.git.BranchSpec>
-                    </branches>
-                    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-                    <submoduleCfg class="empty-list"/>
-                    <extensions/>
-                </scm>
-                <scriptPath>Jenkinsfile</scriptPath>
-                <lightweight>true</lightweight>
-            </definition>
-            <triggers/>
-            <disabled>false</disabled>
-          </flow-definition>
-    - id: jenkins-job-build
-      if: ${{ parameters.cicdProvider === "jenkins" }}
-      name: Jenkins Job Build
-      action: jenkins:job:build
-      input:
-        jobName: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}/${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
     - id: register
       name: Register Component
       action: catalog:register
@@ -123,5 +60,5 @@ spec:
       - url: ${{ steps.publish.output.repoContentsUrl }}
         title: 'Gitlab Repository'
       - title: Open in catalog
-        icon: catalog
+        icon: 'kind:component'
         entityRef: ${{ steps.register.output.entityRef }}

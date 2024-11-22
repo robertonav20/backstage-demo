@@ -16,7 +16,6 @@
     "build-image": "docker build ../.. -f Dockerfile --tag backstage"
   },
   "dependencies": {
-    "@backstage-community/plugin-jenkins-backend": "^0.6.1",
     "@backstage/backend-defaults": "^0.5.0",
     "@backstage/config": "^1.2.0",
     "@backstage/plugin-app-backend": "^0.3.74",
@@ -47,7 +46,6 @@
     "@backstage/plugin-techdocs-backend": "^1.10.13",
     "@immobiliarelabs/backstage-plugin-gitlab-backend": "^6.7.0",
     "@roadiehq/scaffolder-backend-module-utils": "^2.0.2",
-    "@robertonav20/backstage-plugin-scaffolder-jenkins-actions": "0.0.1-alpha4",
     "app": "link:../app",
     "better-sqlite3": "^9.0.0",
     "node-gyp": "^10.0.0",

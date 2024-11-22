@@ -40,7 +40,7 @@ spec:
               - gitlab-local
   steps:
     - id: template
-      name: Fetch Skeleton + Template
+      name: Fetch Skeleton
       action: fetch:template
       input:
         url: ./skeleton
@@ -67,8 +67,9 @@ spec:
         catalogInfoPath: '/catalog.yaml'
   output:
     links:
-      - title: 'Gitlab Repository'
+      - title: Repository
+        icon: github
         url: ${{ steps.publish.output.repoContentsUrl }}
-      - title: 'Catalog'
-        icon: catalog
+      - title: Catalog
+        icon: 'kind:component'
         entityRef: ${{ steps.register.output.entityRef }}

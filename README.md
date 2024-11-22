@@ -11,10 +11,9 @@ yarn dev
 
 ## Useful links
 
-- [Backstage - UI](http://localhost:3000)
-- [Backstage - BE](http://localhost:7000)
+- [Backstage - UI](http://backstage-local:3000)
+- [Backstage - BE](http://backstage-local:7007)
 - [Gitlab](http://gitlab-local)
-- [Jenkins](http://jenkins-local)
 
 ## Installation
 
@@ -23,7 +22,6 @@ yarn dev
 ```sh
 echo "127.0.0.1 gitlab-local" | sudo tee -a /etc/hosts
 echo "127.0.0.1 gitlab-runner" | sudo tee -a /etc/hosts
-echo "127.0.0.1 jenkins-local" | sudo tee -a /etc/hosts
 ```
 
 2. **Tilt use docker-compose file as default**
@@ -32,7 +30,7 @@ echo "127.0.0.1 jenkins-local" | sudo tee -a /etc/hosts
 tilt up
 ```
 
-The latest command will create and run a container of **gitlab**, **jenkins**, **postgres** and **redis**. All of them are mandatory to execute backstage and own templates.
+The latest command will create and run a container of **gitlab**, **postgres** and **redis**. All of them are mandatory to execute backstage and own templates.
 
 ## Run local kubernetes cluster
 

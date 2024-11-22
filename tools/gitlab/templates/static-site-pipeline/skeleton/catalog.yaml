@@ -7,9 +7,6 @@ metadata:
   {%- endif %}
   annotations:
     github.com/project-slug: ${{values.owner + "/" + values.repo}}
-    {%- if values.cicdProvider === 'jenkins' %}
-    'jenkins.io/job-full-name': ${{values.owner + "/" + values.repo}}
-    {%- endif %}
 spec:
   type: website
   lifecycle: experimental

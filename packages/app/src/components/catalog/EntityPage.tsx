@@ -57,9 +57,6 @@ import {
   EntityKubernetesContent,
 } from '@backstage/plugin-kubernetes';
 
-import {
-  EntityJenkinsContent,
-} from '@backstage-community/plugin-jenkins';
 
 import {
     isGitlabAvailable,
@@ -81,24 +78,6 @@ const techdocsContent = (
       <ReportIssue />
     </TechDocsAddons>
   </EntityTechdocsContent>
-);
-
-const cicdContent = (
-  // This is an example of how you can implement your company's logic in entity page.
-  // You can for example enforce that all components of type 'service' should use GitHubActions
-  <EntitySwitch>
-    {/*
-      Here you can add support for different CI/CD services, for example
-      using @backstage-community/plugin-github-actions as follows:
-      <EntitySwitch.Case if={isGithubActionsAvailable}>
-        <EntityGithubActionsContent />
-      </EntitySwitch.Case>
-     */}
-
-    <EntitySwitch.Case>
-      <EntityJenkinsContent />
-    </EntitySwitch.Case>
-  </EntitySwitch>
 );
 
 const entityWarningContent = (
@@ -185,10 +164,6 @@ const serviceEntityPage = (
       {overviewContent}
     </EntityLayout.Route>
 
-    <EntityLayout.Route path="/ci-cd" title="CI/CD">
-      {cicdContent}
-    </EntityLayout.Route>
-
     <EntityLayout.Route path="/kubernetes" title="Kubernetes">
       <EntityKubernetesContent />
     </EntityLayout.Route>
@@ -231,10 +206,6 @@ const websiteEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       {overviewContent}
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/ci-cd" title="CI/CD">
-      {cicdContent}
     </EntityLayout.Route>
 
     <EntityLayout.Route

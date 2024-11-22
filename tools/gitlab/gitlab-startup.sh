@@ -49,7 +49,7 @@ function wait_and_configure_gitlab() {
         GITLAB_CREDENTIALS=$(gitlab-rails runner "
             application = Doorkeeper::Application.create(
                 name: 'backstage',
-                redirect_uri: 'http://localhost:7007/api/auth/gitlab/handler/frame',
+                redirect_uri: 'http://backstage-local:7007/api/auth/gitlab/handler/frame',
                 scopes: 'api read_user',
                 confidential: true,
                 trusted: true,

@@ -7,8 +7,8 @@ function App() {
 
   useEffect(() => {
     fetch('http://localhost:8080/api/v1/hello')
-      .then(response => response.json())
-      .then(json => setData(json))
+      .then(response => response.text())
+      .then(body => setData(body))
       .catch(error => console.error(error));
   }, []);
 
@@ -17,7 +17,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          { data ? <pre>{data}</pre> : 'Loading...'}
+          {data ? <pre>{data}</pre> : 'Loading...'}
         </p>
       </header>
     </div>

@@ -112,12 +112,12 @@ docker_build(
     ref = 'backstage-app-image',
     context = '../',
     dockerfile = './backstage-app/Dockerfile',
+    only = ['app-config.yaml', './packages/app'],
     live_update = [
         # when package.json changes, we need to do a full build
         fall_back_on(['./packages/app/package.json']),
         # Map the local source code into the container under /src
-        sync('./packages/app/public', '/app/public'),
-        sync('./packages/app/src', '/app/src'),
+        sync('./packages/app', '/app'),
         sync('./app-config.yaml', '/app/app-config.yaml'),
     ],
     build_args = BUILD_ARGS
@@ -127,12 +127,12 @@ docker_build(
     ref = 'backstage-backend-image',
     context = '../',
     dockerfile = './backstage-backend/Dockerfile',
+    only = ['app-config.yaml', './packages/backend'],
     live_update=[
         # when package.json changes, we need to do a full build
         fall_back_on(['./packages/backend/package.json']),
         # Map the local source code into the container under /src
-        sync('./packages/backend/static', '/app/static'),
-        sync('./packages/backend/src', '/app/src'),
+        sync('./packages/backend', '/app'),
         sync('./app-config.yaml', '/app/app-config.yaml'),
     ],
     build_args = BUILD_ARGS

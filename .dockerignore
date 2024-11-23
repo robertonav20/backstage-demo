@@ -3,6 +3,7 @@
 .yarn/install-state.gz
 node_modules
 # packages/*/src
+packages/*/e2e-tests
 packages/*/node_modules
 plugins
 *.local.yaml

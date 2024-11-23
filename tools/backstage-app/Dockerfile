@@ -11,9 +11,10 @@ WORKDIR /app
 
 COPY --from=builder /app ./
 
-RUN npm i -g @backstage/cli@0.27.1
+RUN npm i -g @backstage/cli@0.29.2
 
 ADD ./app-config.yaml ./app-config.yaml
+COPY ./packages/app/assets ./assets
 COPY ./packages/app/public ./public
 COPY ./packages/app/src ./src
 

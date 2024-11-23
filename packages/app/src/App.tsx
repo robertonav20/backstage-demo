@@ -2,17 +2,12 @@ import React from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import {
   apiDocsPlugin,
-  ApiExplorerPage,
-  EntityApiDefinitionCard,
-  EntityConsumingComponentsCard,
-  EntityProvidingComponentsCard
+  ApiExplorerPage
 } from '@backstage/plugin-api-docs';
 import {
   CatalogEntityPage,
   CatalogIndexPage,
-  catalogPlugin,
-  EntityAboutCard,
-  EntityLayout,
+  catalogPlugin
 } from '@backstage/plugin-catalog';
 import {
   CatalogImportPage,
@@ -45,7 +40,11 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { gitlabAuthApiRef } from '@backstage/core-plugin-api';
-import { Grid } from '@material-ui/core';
+import {
+  UnifiedThemeProvider
+} from '@backstage/theme';
+import { appTheme } from './theme';
+import Brightness2Icon from '@material-ui/icons/Brightness2';
 
 const app = createApp({
   apis,
@@ -83,37 +82,18 @@ const app = createApp({
       />
     ),
   },
+  themes: [
+    {
+      id: 'appTheme',
+      title: 'App Theme',
+      variant: 'dark',
+      icon: <Brightness2Icon />,
+      Provider: ({ children }) => (
+          <UnifiedThemeProvider theme={appTheme} children={children} />
+      )
+    }
+  ]
 });
-
-const apiPage = (
-  <EntityLayout>
-    <EntityLayout.Route path="/" title="Overview">
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <EntityAboutCard />
-        </Grid>
-        <Grid container>
-          <Grid item md={12}>
-            <Grid item xs={12} md={6}>
-              <EntityProvidingComponentsCard />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <EntityConsumingComponentsCard />
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-
-    <EntityLayout.Route path="/definition" title="Definition">
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <EntityApiDefinitionCard />
-        </Grid>
-      </Grid>
-    </EntityLayout.Route>
-  </EntityLayout>
-);
 
 const routes = (
   <FlatRoutes>

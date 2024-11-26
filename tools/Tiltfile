@@ -147,3 +147,5 @@ dc_resource(name = 'redis', labels = ['Services'])
 
 dc_resource(name = 'backstage-app', labels = ['Backstage'])
 dc_resource(name = 'backstage-backend', labels = ['Backstage'])
+
+local(command='./startup.sh', auto_init = False, trigger_mode = TRIGGER_MODE_MANUAL)

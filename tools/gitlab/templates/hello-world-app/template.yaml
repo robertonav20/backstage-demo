@@ -23,6 +23,11 @@ spec:
           type: string
           ui:field: EntityPicker
           ui:options: {}
+        parentComponentHostname:
+          title: Parent Component Hostname
+          type: string
+          description: Hostname and port of hello world service
+          default: hello-world-service-local:7080
     - title: Choose a location
       required:
         - repoUrl
@@ -48,6 +53,7 @@ spec:
           component_id: ${{ parameters.component_id }}
           description: 'Hello World App'
           parent_component: ${{ parameters.parentComponent }}
+          parent_component_hostname: ${{ parameters.parentComponentHostname }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
           owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
     - id: publish

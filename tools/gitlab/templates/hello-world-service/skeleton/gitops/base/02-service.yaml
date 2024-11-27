@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${{ values.component_id }}-service
+  namespace: default
+spec:
+  ports:
+    - name: http
+      port: ${{ values.serverPort }}
+      targetPort: ${{ values.serverPort }}
+      protocol: TCP
+  selector:
+    app: ${{ values.component_id }}

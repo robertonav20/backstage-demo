@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/v1/hello')
+    fetch('http://${{ values.parent_component_hostname }}/api/v1/hello')
       .then(response => response.text())
       .then(body => setData(body))
       .catch(error => console.error(error));

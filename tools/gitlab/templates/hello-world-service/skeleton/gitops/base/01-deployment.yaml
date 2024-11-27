@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${{ values.component_id }}
+  labels:
+    app: ${{ values.component_id }}
+spec:
+  selector:
+    matchLabels:
+      app: ${{ values.component_id }}
+  template:
+    metadata:
+      labels:
+        app: ${{ values.component_id }}
+    spec:
+      imagePullSecrets:
+        - name: gitlab-local-container-registry-auth
+      containers:
+      - name: app
+        image: ttl.sh/backstage-demo/${{ values.component_id }}/${{ values.component_id }}:latest
+        ports:
+        - containerPort: ${{ values.serverPort }}

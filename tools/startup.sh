@@ -21,6 +21,12 @@ nodes:
       - containerPort: 443
         hostPort: 7443
         protocol: TCP
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."172.17.0.1:5050"]
+    endpoint = ["http://172.17.0.1:5050"]
+  [plugins."io.containerd.grpc.v1.cri".registry.configs."172.17.0.1:5050".tls]
+    insecure_skip_verify = true
 EOF
 
 kubectl cluster-info
@@ -34,7 +40,7 @@ sleep 5
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-sleep 10
+sleep 20
 
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
 
@@ -62,6 +68,14 @@ spec:
             port:
               number: 443
 EOF
+
+kubectl config set-context --current --namespace=default
+
+kubectl create secret docker-registry gitlab-local-container-registry-auth \
+  --docker-server=http://172.17.0.1:5050 \
+  --docker-username=root \
+  --docker-password=glpat-zQ-yQ8VyW37oRSbEnWAx \
+  --docker-email=gitlab_admin_2ec6a0@example.com
 
 #BACKSTAGE
 kubectl create serviceaccount backstage-service-account

@@ -47,3 +47,13 @@ To configure kubernetes just run `startup.sh` under folder tools which includes
 The entrypoint for kubernets cluster are `:7080` for http and `:7443` for https
 
 NOTE: additional ingress hostname must be added to `/etc/hosts`
+
+## Run Hello World Template
+
+```sh
+docker run --rm -d -p 3001:80/tcp gitlab-local:5050/backstage-demo/hello-world-app/hello-world-app:main-COMMIT
+docker run --rm -d -p 8080:8080/tcp gitlab-local:5050/backstage-demo/hello-world-service/hello-world-service:main-COMMIT
+```
+
+- [Hello World App](http://hello-world-app-local:7080)
+- [Hello World Service](http://hello-world-service-local:7080/api/v1/hello)

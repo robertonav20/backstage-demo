@@ -160,6 +160,7 @@ services:
       KUBERNETES_CLIENT_CERTIFICATE_DATA: ${KUBERNETES_CLIENT_CERTIFICATE_DATA}
       KUBERNETES_CLIENT_KEY_DATA: ${KUBERNETES_CLIENT_KEY_DATA}
     privileged: true
+    network_mode: "host"
     ports:
       - "3000:3000"
     volumes:
@@ -188,6 +189,7 @@ services:
       NODE_OPTIONS: --no-node-snapshot
       LOG_LEVEL: debug
     privileged: true
+    network_mode: "host"
     ports:
       - "7007:7007"
     volumes:

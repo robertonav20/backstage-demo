@@ -8,6 +8,7 @@ metadata:
   annotations:
     github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
     backstage.io/kubernetes-label-selector: 'app=${{values.component_id}}'
+    argocd/app-name: ${{values.component_id}}
     backstage.io/techdocs-ref: dir:.
 spec:
   type: website

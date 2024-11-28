@@ -124,8 +124,6 @@ catalog:
       target: ${GITLAB_URL}/backstage-demo/templates/hello-world-app/-/blob/main/template.yaml
     - type: url
       target: ${GITLAB_URL}/backstage-demo/templates/hello-world-service/-/blob/main/template.yaml
-    - type: url
-      target: ${GITLAB_URL}/backstage-demo/templates/static-site-pipeline/-/blob/main/template.yaml
 
   providers:
     gitlab:
@@ -209,3 +207,14 @@ explore:
       url: "/graphiql"
       image: "/graphiql.png"
       tags: ["graphql", "dev"]
+
+proxy:
+  '/argocd/api':
+    target: ${ARGOCD_BASE_URL}/api/v1/
+    changeOrigin: true
+    secure: false
+    headers:
+      Authorization: 'Bearer ${ARGOCD_TOKEN}'
+
+argocd:
+  baseUrl: ${ARGOCD_BASE_URL}

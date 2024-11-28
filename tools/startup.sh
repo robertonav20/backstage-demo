@@ -42,8 +42,6 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 
 sleep 20
 
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
-
 cat <<EOF | kubectl apply -f -
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -68,6 +66,51 @@ spec:
             port:
               number: 443
 EOF
+
+ARGOCD_USER=argo-admin-user
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  admin.enabled: "true"
+  accounts.$ARGOCD_USER.enabled: "true"
+  accounts.$ARGOCD_USER: apiKey, login
+EOF
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  policy.csv: |
+    g, $ARGOCD_USER, role:admin
+EOF
+
+kubectl rollout restart deployment argocd-server -n argocd
+
+sleep 20
+
+ARGOCD_ADMIN_PASSWORD=kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+
+echo $ARGOCD_USER
+echo $ARGOCD_ADMIN_PASSWORD
+
+argocd login argocd-local:7443 --insecure --grpc-web --username admin --password $ARGOCD_ADMIN_PASSWORD
+ARGOCD_TOKEN=argocd account generate-token --insecure --grpc-web --account $ARGOCD_USER
+echo $ARGOCD_TOKEN
+
+argocd account update-password --account $ARGOCD_USER --current-password $ARGOCD_ADMIN_PASSWORD --new-password "$ARGOCD_USER-password"
+ARGOCD_USER_PASSWORD=$ARGOCD_USER-password
+echo $ARGOCD_USER_PASSWORD
 
 kubectl config set-context --current --namespace=default
 
@@ -105,10 +148,10 @@ metadata:
 type: kubernetes.io/service-account-token
 EOF
 
-#Token version
+#Client Key
 echo "Backstage Token"
-kubectl get secret backstage-secret -o jsonpath='{.data.token}' | base64 --decode
+kubectl -n default get secret backstage-secret -o jsonpath='{.data.token}' | base64 --decode
 
-#CA CRT version
+#Client Certificate
 echo "Backstage CRT"
-kubectl get secret backstage-secret -o jsonpath='{.data.ca\.crt}'
+kubectl -n default get secret backstage-secret -o jsonpath='{.data.ca\.crt}'

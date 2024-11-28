@@ -57,7 +57,6 @@ import {
   EntityKubernetesContent,
 } from '@backstage/plugin-kubernetes';
 
-
 import {
     isGitlabAvailable,
     EntityGitlabContent,
@@ -71,6 +70,68 @@ import {
     EntityGitlabReadmeCard,
     EntityGitlabReleasesCard,
 } from '@immobiliarelabs/backstage-plugin-gitlab';
+
+import {
+  EntityArgoCDHistoryCard,
+  EntityArgoCDOverviewCard,
+  isArgocdAvailable
+} from '@roadiehq/backstage-plugin-argo-cd';
+
+
+const gitlabContent = (
+  <Grid container spacing={3} alignItems="stretch">
+    <EntitySwitch>
+      <EntitySwitch.Case if={isGitlabAvailable}>
+        <Grid item md={12}>
+            <EntityGitlabReadmeCard />
+        </Grid>
+
+        <Grid item md={6}>
+          <EntityGitlabPeopleCard />
+        </Grid>
+        <Grid item md={6}>
+            <EntityGitlabLanguageCard />
+        </Grid>
+
+        <Grid item md={12}>
+            <EntityGitlabReleasesCard />
+        </Grid>
+
+        <Grid item md={6}>
+          <EntityGitlabCoverageCard />
+        </Grid>
+        <Grid item md={6}>
+          <EntityGitlabMergeRequestStatsCard />
+        </Grid>
+
+        <Grid item md={12}>
+            <EntityGitlabPipelinesTable />
+        </Grid>
+        <Grid item md={12}>
+            <EntityGitlabMergeRequestsTable />
+        </Grid>
+        <Grid item md={12}>
+            <EntityGitlabIssuesTable />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+  </Grid>
+);
+
+const argoCDContent = (
+  <Grid container spacing={3} alignItems="stretch">
+    <EntitySwitch>
+      <EntitySwitch.Case if={e => Boolean(isArgocdAvailable(e))}>
+        <Grid item md={12}>
+          <EntityArgoCDOverviewCard />
+        </Grid>
+        <Grid item md={12}>
+          <EntityArgoCDHistoryCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+  </Grid>
+);
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -121,40 +182,21 @@ const overviewContent = (
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
+
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
-      <EntitySwitch>
-        <EntitySwitch.Case if={isGitlabAvailable}>
-          <Grid item md={12}>
-              <EntityGitlabReadmeCard />
-          </Grid>
-          <Grid item sm={12} md={3} lg={3}>
-              <EntityGitlabPeopleCard />
-          </Grid>
-          <Grid item sm={12} md={3} lg={3}>
-              <EntityGitlabLanguageCard />
-          </Grid>
-          <Grid item sm={12} md={3} lg={3}>
-              <EntityGitlabCoverageCard />
-          </Grid>
-          <Grid item sm={12} md={3} lg={3}>
-              <EntityGitlabMergeRequestStatsCard />
-          </Grid>
-          <Grid item sm={12} md={3} lg={3}>
-              <EntityGitlabReleasesCard />
-          </Grid>
-          <Grid item md={12}>
-              <EntityGitlabPipelinesTable />
-          </Grid>
-          <Grid item md={12}>
-              <EntityGitlabMergeRequestsTable />
-          </Grid>
-          <Grid item md={12}>
-              <EntityGitlabIssuesTable />
-          </Grid>
-        </EntitySwitch.Case>
-      </EntitySwitch>
+
+    <Grid item md={6}>
+      <EntityGitlabPeopleCard />
+    </Grid>
+    <Grid item md={6}>
+        <EntityGitlabLanguageCard />
+    </Grid>
+
+    <Grid item md={12}>
+        <EntityGitlabReleasesCard />
+    </Grid>
   </Grid>
 );
 
@@ -162,6 +204,14 @@ const serviceEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       {overviewContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/gitlab" title="Gitlab">
+      {gitlabContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/argocd" title="Argo CD">
+      {argoCDContent}
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/kubernetes" title="Kubernetes">
@@ -189,12 +239,6 @@ const serviceEntityPage = (
         </Grid>
       </Grid>
     </EntityLayout.Route>
-      <EntityLayout.Route
-        if={isGitlabAvailable}
-        path="/gitlab"
-        title="Gitlab">
-      <EntityGitlabContent />
-    </EntityLayout.Route>
 
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
@@ -208,10 +252,15 @@ const websiteEntityPage = (
       {overviewContent}
     </EntityLayout.Route>
 
-    <EntityLayout.Route
-      path="/kubernetes"
-      title="Kubernetes"
-    >
+    <EntityLayout.Route path="/gitlab" title="Gitlab">
+      {gitlabContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/argocd" title="Argo CD">
+      {argoCDContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes">
       <EntityKubernetesContent />
     </EntityLayout.Route>
 

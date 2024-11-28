@@ -147,6 +147,10 @@ services:
       context: ../
       dockerfile: tools/backstage-app
     environment:
+      ARGOCD_BASE_URL: ${ARGOCD_BASE_URL}
+      ARGOCD_USER: ${ARGOCD_USER}
+      ARGOCD_PASSWORD: ${ARGOCD_PASSWORD}
+      ARGOCD_TOKEN: ${ARGOCD_TOKEN}
       GITLAB_HOST: ${GITLAB_HOST}
       GITLAB_URL: ${GITLAB_URL}
       GITLAB_API_BASE_URL: ${GITLAB_API_BASE_URL}
@@ -174,6 +178,10 @@ services:
       context: ../
       dockerfile: tools/backstage-backend
     environment:
+      ARGOCD_BASE_URL: ${ARGOCD_BASE_URL}
+      ARGOCD_USER: ${ARGOCD_USER}
+      ARGOCD_PASSWORD: ${ARGOCD_PASSWORD}
+      ARGOCD_TOKEN: ${ARGOCD_TOKEN}
       GITLAB_HOST: ${GITLAB_HOST}
       GITLAB_URL: ${GITLAB_URL}
       GITLAB_API_BASE_URL: ${GITLAB_API_BASE_URL}

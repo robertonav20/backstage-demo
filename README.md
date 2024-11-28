@@ -13,6 +13,7 @@ Here the links
 - [Redis](redis-local:6379)
 - [Gitlab](http://gitlab-local)
 - [ArgoCD](https://argocd-local:7443)
+- [ArgoCD Swagger](https://argocd-local:7443/swagger-ui)
 
 ## Installation
 

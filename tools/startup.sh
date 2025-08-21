@@ -40,7 +40,7 @@ sleep 5
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-sleep 20
+sleep 40
 
 cat <<EOF | kubectl apply -f -
 apiVersion: networking.k8s.io/v1
@@ -97,15 +97,15 @@ EOF
 
 kubectl rollout restart deployment argocd-server -n argocd
 
-sleep 20
+sleep 40
 
-ARGOCD_ADMIN_PASSWORD=kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+ARGOCD_ADMIN_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo)
 
 echo $ARGOCD_USER
 echo $ARGOCD_ADMIN_PASSWORD
 
 argocd login argocd-local:7443 --insecure --grpc-web --username admin --password $ARGOCD_ADMIN_PASSWORD
-ARGOCD_TOKEN=argocd account generate-token --insecure --grpc-web --account $ARGOCD_USER
+ARGOCD_TOKEN=$(argocd account generate-token --insecure --grpc-web --account $ARGOCD_USER)
 echo $ARGOCD_TOKEN
 
 argocd account update-password --account $ARGOCD_USER --current-password $ARGOCD_ADMIN_PASSWORD --new-password "$ARGOCD_USER-password"
@@ -153,5 +153,5 @@ echo "Backstage Token"
 kubectl -n default get secret backstage-secret -o jsonpath='{.data.token}' | base64 --decode
 
 #Client Certificate
-echo "Backstage CRT"
+echo "\n\nBackstage CRT"
 kubectl -n default get secret backstage-secret -o jsonpath='{.data.ca\.crt}'

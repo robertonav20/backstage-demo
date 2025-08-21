@@ -88,6 +88,7 @@ BUILD_ARGS = {
     KUBERNETES_SKIP_METRICS_KEY: KUBERNETES_SKIP_METRICS_VALUE,
     KUBERNETES_CLIENT_CERTIFICATE_DATA_KEY: KUBERNETES_CLIENT_CERTIFICATE_DATA_VALUE,
     KUBERNETES_CLIENT_KEY_DATA_KEY: KUBERNETES_CLIENT_KEY_DATA_VALUE,
+    'NODE_OPTIONS': '--no-node-snapshot'
 }
 
 os.putenv(ARGOCD_BASE_URL_KEY, ARGOCD_BASE_URL_VALUE)
@@ -118,6 +119,7 @@ os.putenv(KUBERNETES_SKIP_TLS_KEY, KUBERNETES_SKIP_TLS_VALUE)
 os.putenv(KUBERNETES_SKIP_METRICS_KEY, KUBERNETES_SKIP_METRICS_VALUE)
 os.putenv(KUBERNETES_CLIENT_CERTIFICATE_DATA_KEY, KUBERNETES_CLIENT_CERTIFICATE_DATA_VALUE)
 os.putenv(KUBERNETES_CLIENT_KEY_DATA_KEY, KUBERNETES_CLIENT_KEY_DATA_VALUE)
+os.putenv('NODE_OPTIONS', '--no-node-snapshot')
 
 docker_build(
     ref = 'gitlab-image',
@@ -130,44 +132,28 @@ docker_build(
     build_args = BUILD_ARGS,
 )
 
-docker_build(
-    ref = 'backstage-app-image',
-    context = '../',
-    dockerfile = './backstage-app/Dockerfile',
-    only = ['app-config.yaml', './packages/app'],
-    live_update = [
-        # when package.json changes, we need to do a full build
-        fall_back_on(['./packages/app/package.json']),
-        # Map the local source code into the container under /src
-        sync('./packages/app', '/app'),
-        sync('./app-config.yaml', '/app/app-config.yaml'),
-    ],
-    build_args = BUILD_ARGS
-)
-
-docker_build(
-    ref = 'backstage-backend-image',
-    context = '../',
-    dockerfile = './backstage-backend/Dockerfile',
-    only = ['app-config.yaml', './packages/backend'],
-    live_update=[
-        # when package.json changes, we need to do a full build
-        fall_back_on(['./packages/backend/package.json']),
-        # Map the local source code into the container under /src
-        sync('./packages/backend', '/app'),
-        sync('./app-config.yaml', '/app/app-config.yaml'),
-    ],
-    build_args = BUILD_ARGS
-)
-
 docker_compose( configPaths = './docker-compose.yaml')
 
-dc_resource(name = 'gitlab', labels = ['Services'])
+dc_resource(name = 'gitlab', labels = ['Services'], links = ['http://gitlab-local'])
 dc_resource(name = 'gitlab-runner', labels = ['Services'])
 dc_resource(name = 'postgres', labels = ['Services'])
 dc_resource(name = 'redis', labels = ['Services'])
 
-dc_resource(name = 'backstage-app', labels = ['Backstage'])
-dc_resource(name = 'backstage-backend', labels = ['Backstage'])
-
-local_resource('startup', cmd = 'startup.sh', auto_init = False, labels = ['Kubernetes-ArgoCD'])
+local_resource('startup', 'startup.sh', auto_init = False, labels = ['Kubernetes-ArgoCD'], links = ['https://argocd-local:7443'])
+local_resource('install dependencies', 'yarn install', auto_init = False, labels = ['Backstage'])
+local_resource(
+    'backstage-app',
+    serve_cmd = 'cd ../packages/app/ && backstage-cli package start',
+    serve_env = BUILD_ARGS,
+    allow_parallel = True,
+    labels = ['Backstage'],
+    links = ['http://backstage-local:3000']
+)
+local_resource(
+    'backstage-backend',
+    serve_cmd = 'cd ../packages/backend && backstage-cli package start',
+    serve_env = BUILD_ARGS,
+    allow_parallel = True,
+    labels = ['Backstage'],
+    links = ['http://backstage-local:7007']
+)

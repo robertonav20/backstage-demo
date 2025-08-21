@@ -53,7 +53,7 @@ organization:
   name: Backstage
 
 backend:
-  baseUrl: http://backstage-local:7007
+  baseUrl: http://localhost:7007
   listen:
     port: 7007
   csp:

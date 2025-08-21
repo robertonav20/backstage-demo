@@ -15,6 +15,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
+    restart: unless-stopped
 
   redis:
     hostname: redis-local
@@ -23,6 +24,7 @@ services:
     privileged: true
     ports:
       - "6379:6379"
+    restart: unless-stopped
 
   gitlab:
     hostname: gitlab-local
@@ -115,6 +117,7 @@ services:
       - gitlab_logs:/var/log/gitlab
       - gitlab_data:/var/opt/gitlab
       - gitlab_container_storage:/opt/gitlab/etc/registry/storage
+    restart: unless-stopped
 
   gitlab-runner:
     hostname: gitlab-runner
@@ -134,74 +137,10 @@ services:
       # - gitlab_runner_config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
-    restart: always
+    restart: unless-stopped
     depends_on:
       gitlab:
         condition: service_healthy
-
-  backstage-app:
-    hostname: backstage-local
-    container_name: backstage-app
-    image: backstage-app-image
-    build:
-      context: ../
-      dockerfile: tools/backstage-app
-    environment:
-      ARGOCD_BASE_URL: ${ARGOCD_BASE_URL}
-      ARGOCD_USER: ${ARGOCD_USER}
-      ARGOCD_PASSWORD: ${ARGOCD_PASSWORD}
-      ARGOCD_TOKEN: ${ARGOCD_TOKEN}
-      GITLAB_HOST: ${GITLAB_HOST}
-      GITLAB_URL: ${GITLAB_URL}
-      GITLAB_API_BASE_URL: ${GITLAB_API_BASE_URL}
-      GITLAB_API_KEY: ${GITLAB_API_KEY}
-      GITLAB_CLIENT_ID: ${GITLAB_CLIENT_ID}
-      GITLAB_CLIENT_SECRET: ${GITLAB_CLIENT_SECRET}
-      KUBERNETES_API_BASE_URL: ${KUBERNETES_API_BASE_URL}
-      KUBERNETES_CLUSTER_NAME: ${KUBERNETES_CLUSTER_NAME}
-      KUBERNETES_SKIP_TLS: ${KUBERNETES_SKIP_TLS}
-      KUBERNETES_SKIP_METRICS: ${KUBERNETES_SKIP_METRICS}
-      KUBERNETES_CLIENT_CERTIFICATE_DATA: ${KUBERNETES_CLIENT_CERTIFICATE_DATA}
-      KUBERNETES_CLIENT_KEY_DATA: ${KUBERNETES_CLIENT_KEY_DATA}
-    privileged: true
-    network_mode: "host"
-    ports:
-      - "3000:3000"
-    volumes:
-      - backstage_app_node_modules:/app/node_modules
-
-  backstage-backend:
-    hostname: backstage-local
-    container_name: backstage-backend
-    image: backstage-backend-image
-    build:
-      context: ../
-      dockerfile: tools/backstage-backend
-    environment:
-      ARGOCD_BASE_URL: ${ARGOCD_BASE_URL}
-      ARGOCD_USER: ${ARGOCD_USER}
-      ARGOCD_PASSWORD: ${ARGOCD_PASSWORD}
-      ARGOCD_TOKEN: ${ARGOCD_TOKEN}
-      GITLAB_HOST: ${GITLAB_HOST}
-      GITLAB_URL: ${GITLAB_URL}
-      GITLAB_API_BASE_URL: ${GITLAB_API_BASE_URL}
-      GITLAB_API_KEY: ${GITLAB_API_KEY}
-      GITLAB_CLIENT_ID: ${GITLAB_CLIENT_ID}
-      GITLAB_CLIENT_SECRET: ${GITLAB_CLIENT_SECRET}
-      KUBERNETES_API_BASE_URL: ${KUBERNETES_API_BASE_URL}
-      KUBERNETES_CLUSTER_NAME: ${KUBERNETES_CLUSTER_NAME}
-      KUBERNETES_SKIP_TLS: ${KUBERNETES_SKIP_TLS}
-      KUBERNETES_SKIP_METRICS: ${KUBERNETES_SKIP_METRICS}
-      KUBERNETES_CLIENT_CERTIFICATE_DATA: ${KUBERNETES_CLIENT_CERTIFICATE_DATA}
-      KUBERNETES_CLIENT_KEY_DATA: ${KUBERNETES_CLIENT_KEY_DATA}
-      NODE_OPTIONS: --no-node-snapshot
-      LOG_LEVEL: debug
-    privileged: true
-    network_mode: "host"
-    ports:
-      - "7007:7007"
-    volumes:
-      - backstage_backend_node_modules:/app/node_modules
 
 volumes:
   gitlab_config:

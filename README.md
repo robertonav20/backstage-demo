@@ -19,20 +19,26 @@ Here the links
 
 1. **Add these 2 hostnames to /etc/hosts**
 
-```sh
-echo "127.0.0.1 gitlab-local" | sudo tee -a /etc/hosts
-echo "127.0.0.1 gitlab-runner" | sudo tee -a /etc/hosts
-echo "127.0.0.1 postgres-local" | sudo tee -a /etc/hosts
-echo "127.0.0.1 redis-local" | sudo tee -a /etc/hosts
-echo "127.0.0.1 backstage-local" | sudo tee -a /etc/hosts
-echo "127.0.0.1 argocd-local" | sudo tee -a /etc/hosts
-```
+    ```sh
+    echo "127.0.0.1 gitlab-local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 gitlab-runner" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 postgres-local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 redis-local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 backstage-local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 argocd-local" | sudo tee -a /etc/hosts
+    ```
 
-2. **Tilt use docker-compose file as default**
+2. **Create Kubernetes Cluster** with script startup under folder tools
 
-```sh
-tilt up
-```
+    ```sh
+    ./startup.sh
+    ```
+
+3. **Tilt use docker-compose file as default**
+
+    ```sh
+    tilt up
+    ```
 
 The latest command will create and run a container of **gitlab**, **postgres** and **redis**. All of them are mandatory to execute backstage and own templates.
 

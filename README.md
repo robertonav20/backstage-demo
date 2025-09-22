@@ -26,6 +26,10 @@ Here the links
     echo "127.0.0.1 redis-local" | sudo tee -a /etc/hosts
     echo "127.0.0.1 backstage-local" | sudo tee -a /etc/hosts
     echo "127.0.0.1 argocd-local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 argocd-local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 hello-world-app-local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 hello-world-service-local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 kind-backstage-demo-cluster-local" | sudo tee -a /etc/hosts
     ```
 
 2. **Create Kubernetes Cluster** with script startup under folder tools

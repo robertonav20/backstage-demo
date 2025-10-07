@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: ${{ values.component_id }}-local
+  - host: ${{ values.component_id }}.local
     http:
       paths:
       - pathType: Prefix

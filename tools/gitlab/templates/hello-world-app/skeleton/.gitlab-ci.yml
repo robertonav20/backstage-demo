@@ -30,7 +30,7 @@ argo:
   image: argoproj/argocd:v2.6.15
   script:
     - echo "Creating ArgoCD Application..."
-    - argocd login argocd-local:7443 --insecure --grpc-web --username argo-admin-user --password argo-admin-user-password
+    - argocd login argocd.local:7443 --insecure --grpc-web --username argo-admin-user --password argo-admin-user-password
     - argocd repo add "http://172.17.0.1/$CI_PROJECT_PATH.git" --project default --username root --password -rob123-
     - argocd app create ${{ values.component_id }} --upsert --repo "http://172.17.0.1/$CI_PROJECT_PATH.git" --path gitops/overlays --dest-namespace default --dest-server https://kubernetes.default.svc
     - argocd app sync ${{ values.component_id }}

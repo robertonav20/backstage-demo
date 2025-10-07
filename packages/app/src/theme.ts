@@ -17,7 +17,7 @@ const appFont = {
     // fontStyle: 'normal',
     // fontDisplay: 'swap',
     // fontWeight: 300,
-    src: `local(${appFontName}), url(${TitilliumWebBold}) format('woff2')`,
+    src: `local(${appFontName}), url(${TitilliumWebRegular}) format('woff2')`,
 };
 
 export const appTheme = createUnifiedTheme({

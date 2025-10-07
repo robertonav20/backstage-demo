@@ -27,7 +27,7 @@ spec:
           title: Parent Component Hostname
           type: string
           description: Hostname and port of hello world service
-          default: hello-world-service-local:7080
+          default: hello-world-service.local:7080
     - title: Choose a location
       required:
         - repoUrl
@@ -39,10 +39,10 @@ spec:
           type: string
           ui:autofocus: true
           ui:field: RepoUrlPicker
-          default: gitlab-local?owner=backstage-demo&repo=hello-world-app
+          default: gitlab.local?owner=backstage-demo&repo=hello-world-app
           ui:options:
             allowedHosts:
-              - gitlab-local
+              - gitlab.local
   steps:
     - id: template
       name: Fetch Skeleton
@@ -60,7 +60,7 @@ spec:
       name: Publish
       action: publish:gitlab
       input:
-        allowedHosts: ['gitlab-local']
+        allowedHosts: ['gitlab.local']
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
         defaultBranch: main

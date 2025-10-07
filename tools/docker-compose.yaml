@@ -1,7 +1,6 @@
 services:
-
   postgres:
-    hostname: postgres-local
+    hostname: postgres.local
     container_name: postgres
     image: postgres:16.4
     environment:
@@ -18,7 +17,7 @@ services:
     restart: unless-stopped
 
   redis:
-    hostname: redis-local
+    hostname: redis.local
     container_name: redis
     image: redis:6.2
     privileged: true
@@ -27,7 +26,7 @@ services:
     restart: unless-stopped
 
   gitlab:
-    hostname: gitlab-local
+    hostname: gitlab.local
     container_name: gitlab
     image: gitlab-image
     build:
@@ -48,7 +47,7 @@ services:
     environment:
       GITLAB_ROOT_PASSWORD: ${GITLAB_PASSWORD}
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab-local'
+        external_url 'http://gitlab.local'
 
         letsencrypt['enable'] = false
 
@@ -58,7 +57,7 @@ services:
         # PostgreSQL connection details
         gitlab_rails['db_adapter'] = 'postgresql'
         gitlab_rails['db_encoding'] = 'unicode'
-        gitlab_rails['db_host'] = 'postgres-local'
+        gitlab_rails['db_host'] = 'postgres.local'
         gitlab_rails['db_user'] = 'gitlab'
         gitlab_rails['db_password'] = 'password'
 
@@ -66,7 +65,7 @@ services:
         redis['enable'] = true
 
         # Redis via TCP
-        gitlab_rails['redis_host'] = 'redis-local'
+        gitlab_rails['redis_host'] = 'redis.local'
         gitlab_rails['redis_port'] = 6379
 
         gitlab_rails['backup_keep_time'] = 345600
@@ -88,7 +87,7 @@ services:
         gitlab_rails['user_is_active'] = true
         gitlab_rails['user_show_secondary_emails'] = false
 
-        registry_external_url 'http://gitlab-local:5050'
+        registry_external_url 'http://gitlab.local:5050'
         gitlab_rails['registry_enabled'] = true
         gitlab_rails['registry_host'] = "localhost"
         gitlab_rails['registry_port'] = "5050"
@@ -120,7 +119,7 @@ services:
     restart: unless-stopped
 
   gitlab-runner:
-    hostname: gitlab-runner
+    hostname: gitlab-runner.local
     container_name: gitlab-runner
     image: gitlab-runner-image
     build:
@@ -130,7 +129,7 @@ services:
         GITLAB_API_KEY: ${GITLAB_API_KEY}
         GITLAB_SCRIPTS_DIR: ${GITLAB_SCRIPTS_DIR}
     group_add:
-        - 984
+      - 984
     privileged: true
     entrypoint: ["/bin/bash", "/scripts/gitlab-runner-startup.sh"]
     volumes:

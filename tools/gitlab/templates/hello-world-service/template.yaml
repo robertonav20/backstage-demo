@@ -55,10 +55,10 @@ spec:
           type: string
           ui:autofocus: true
           ui:field: RepoUrlPicker
-          default: gitlab-local?owner=backstage-demo&repo=hello-world-service
+          default: gitlab.local?owner=backstage-demo&repo=hello-world-service
           ui:options:
             allowedHosts:
-              - gitlab-local
+              - gitlab.local
   steps:
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -84,7 +84,7 @@ spec:
       name: Publish
       action: publish:gitlab
       input:
-        allowedHosts: ['gitlab-local']
+        allowedHosts: ['gitlab.local']
         repoUrl: ${{ parameters.repoUrl }}
         repoVisibility: public
         defaultBranch: main
@@ -112,4 +112,3 @@ spec:
       - title: API
         icon: 'kind:api'
         entityRef: ${{ steps.api.output.entityRef }}
-

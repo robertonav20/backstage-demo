@@ -21,6 +21,11 @@ nodes:
       - containerPort: 443
         hostPort: 7443
         protocol: TCP
+    extraMounts:
+      - containerPath: /etc/ssl/certs/ZSCALER_2025.pem
+        hostPath: /etc/ssl/certs/ZSCALER_2025.pem
+      - containerPath: /etc/ssl/certs/ZSCALER_DOCKER_2025.pem
+        hostPath: /etc/ssl/certs/ZSCALER_DOCKER_2025.pem
 containerdConfigPatches:
 - |-
   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."172.17.0.1:5050"]
@@ -55,7 +60,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: argocd-local
+  - host: argocd.local
     http:
       paths:
       - pathType: Prefix
@@ -104,7 +109,7 @@ ARGOCD_ADMIN_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret
 echo $ARGOCD_USER
 echo $ARGOCD_ADMIN_PASSWORD
 
-argocd login argocd-local:7443 --insecure --grpc-web --username admin --password $ARGOCD_ADMIN_PASSWORD
+argocd login argocd.local:7443 --insecure --grpc-web --username admin --password $ARGOCD_ADMIN_PASSWORD
 ARGOCD_TOKEN=$(argocd account generate-token --insecure --grpc-web --account $ARGOCD_USER)
 echo $ARGOCD_TOKEN
 

@@ -36,7 +36,7 @@ local(command='argocd login argocd-local:7443 --insecure --grpc-web --username a
 ARGOCD_TOKEN_VALUE = local(command='argocd account generate-token --insecure --grpc-web --account argo-admin-user')
 DOCKER_IP_VALUE = local(command='docker network inspect bridge --format="{{(index .IPAM.Config 0).Gateway}}"')
 DOCKER_GID_VALUE = local(command='getent group docker | cut -d: -f3')
-GITLAB_HOST_VALUE = 'gitlab-local'
+GITLAB_HOST_VALUE = 'gitlab.local'
 GITLAB_URL_VALUE = 'http://' + GITLAB_HOST_VALUE
 GITLAB_API_BASE_URL_VALUE = GITLAB_URL_VALUE + '/api/v4'
 GITLAB_USER_VALUE = 'root'
@@ -52,7 +52,7 @@ POSTGRES_DB_VALUE = 'gitlabhq_production'
 POSTGRES_USER_VALUE = 'gitlab'
 POSTGRES_PASSWORD_VALUE = 'password'
 POSTGRES_HOST_AUTH_METHOD_VALUE = 'trust'
-KUBERNETES_API_BASE_URL_VALUE = 'https://kind-backstage-demo-cluster-local:6443'
+KUBERNETES_API_BASE_URL_VALUE = 'https://kind-backstage-demo-cluster.local:6443'
 KUBERNETES_CLUSTER_NAME_VALUE = 'kind-backstage-demo-cluster'
 KUBERNETES_SKIP_TLS_VALUE = 'true'
 KUBERNETES_SKIP_METRICS_VALUE = 'true'
@@ -134,12 +134,12 @@ docker_build(
 
 docker_compose( configPaths = './docker-compose.yaml')
 
-dc_resource(name = 'gitlab', labels = ['Services'], links = ['http://gitlab-local'])
+dc_resource(name = 'gitlab', labels = ['Services'], links = ['http://gitlab.local'])
 dc_resource(name = 'gitlab-runner', labels = ['Services'])
 dc_resource(name = 'postgres', labels = ['Services'])
 dc_resource(name = 'redis', labels = ['Services'])
 
-local_resource('startup', 'startup.sh', auto_init = False, labels = ['Kubernetes-ArgoCD'], links = ['https://argocd-local:7443'])
+local_resource('startup', 'startup.sh', auto_init = False, labels = ['Kubernetes-ArgoCD'], links = ['https://argocd.local:7443'])
 local_resource('install dependencies', 'yarn install', auto_init = False, labels = ['Backstage'])
 local_resource(
     'backstage-app',
@@ -147,7 +147,7 @@ local_resource(
     serve_env = BUILD_ARGS,
     allow_parallel = True,
     labels = ['Backstage'],
-    links = ['http://backstage-local:3000']
+    links = ['http://backstage.local:3000']
 )
 local_resource(
     'backstage-backend',
@@ -155,5 +155,5 @@ local_resource(
     serve_env = BUILD_ARGS,
     allow_parallel = True,
     labels = ['Backstage'],
-    links = ['http://backstage-local:7007']
+    links = ['http://backstage.local:7007']
 )

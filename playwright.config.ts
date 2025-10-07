@@ -31,13 +31,13 @@ export default defineConfig({
   webServer: process.env.CI
     ? []
     : [
-        {
-          command: 'yarn dev',
-          port: 3000,
-          reuseExistingServer: true,
-          timeout: 60_000,
-        },
-      ],
+      {
+        command: 'yarn dev',
+        port: 3000,
+        reuseExistingServer: true,
+        timeout: 60_000,
+      },
+    ],
 
   forbidOnly: !!process.env.CI,
 
@@ -49,7 +49,7 @@ export default defineConfig({
     actionTimeout: 0,
     baseURL:
       process.env.PLAYWRIGHT_URL ??
-      (process.env.CI ? 'http://backstage-local:7007' : 'http://backstage-local:3000'),
+      (process.env.CI ? 'http://backstage.local:7007' : 'http://backstage.local:3000'),
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
   },

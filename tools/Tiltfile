@@ -28,11 +28,11 @@ KUBERNETES_SKIP_METRICS_KEY = 'KUBERNETES_SKIP_METRICS'
 KUBERNETES_CLIENT_CERTIFICATE_DATA_KEY = 'KUBERNETES_CLIENT_CERTIFICATE_DATA'
 KUBERNETES_CLIENT_KEY_DATA_KEY = 'KUBERNETES_CLIENT_KEY_DATA'
 
-ARGOCD_BASE_URL_VALUE = 'https://argocd-local:7443'
+ARGOCD_BASE_URL_VALUE = 'https://argocd.local:7443'
 ARGOCD_USER_VALUE = 'argo-admin-user'
 ARGOCD_PASSWORD_VALUE = 'argo-admin-user-password'
 # Execute argocd login to generate token
-local(command='argocd login argocd-local:7443 --insecure --grpc-web --username admin --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo)')
+local(command='argocd login argocd.local:7443 --insecure --grpc-web --username admin --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo)')
 ARGOCD_TOKEN_VALUE = local(command='argocd account generate-token --insecure --grpc-web --account argo-admin-user')
 DOCKER_IP_VALUE = local(command='docker network inspect bridge --format="{{(index .IPAM.Config 0).Gateway}}"')
 DOCKER_GID_VALUE = local(command='getent group docker | cut -d: -f3')

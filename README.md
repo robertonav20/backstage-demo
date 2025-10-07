@@ -4,8 +4,8 @@ Backstage project is available with docker isn't necessary to run locally and in
 
 Here the links
 
-- [Backstage - UI](http://backstage.local:3000)
-- [Backstage - BE](http://backstage.local:7007)
+- [Backstage - UI](http://localhost:3000)
+- [Backstage - BE](http://localhost:7007)
 
 ## Useful links
 
@@ -24,7 +24,6 @@ Here the links
    echo "127.0.0.1 gitlab-runner.local" | sudo tee -a /etc/hosts
    echo "127.0.0.1 postgres.local" | sudo tee -a /etc/hosts
    echo "127.0.0.1 redis.local" | sudo tee -a /etc/hosts
-   echo "127.0.0.1 backstage.local" | sudo tee -a /etc/hosts
    echo "127.0.0.1 argocd.local" | sudo tee -a /etc/hosts
    echo "127.0.0.1 hello-world-app.local" | sudo tee -a /etc/hosts
    echo "127.0.0.1 hello-world-service.local" | sudo tee -a /etc/hosts

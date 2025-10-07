@@ -1,6 +1,6 @@
 app:
   title: Backstage Demo
-  baseUrl: http://backstage.local:3000
+  baseUrl: http://localhost:3000
   experimental:
     # Auto discovering all plugins extensions
     packages: all
@@ -53,7 +53,7 @@ organization:
   name: Backstage
 
 backend:
-  baseUrl: http://backstage.local:7007
+  baseUrl: http://localhost:7007
   listen:
     port: 7007
   csp:
@@ -71,7 +71,7 @@ backend:
       ]
     frame-src: ["https://www.youtube.com"]
   cors:
-    origin: http://backstage.local:3000
+    origin: http://localhost:3000
     methods: [GET, POST, PUT, DELETE]
     credentials: true
   database:

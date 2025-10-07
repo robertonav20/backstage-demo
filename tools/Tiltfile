@@ -147,7 +147,7 @@ local_resource(
     serve_env = BUILD_ARGS,
     allow_parallel = True,
     labels = ['Backstage'],
-    links = ['http://backstage.local:3000']
+    links = ['http://localhost:3000']
 )
 local_resource(
     'backstage-backend',
@@ -155,5 +155,5 @@ local_resource(
     serve_env = BUILD_ARGS,
     allow_parallel = True,
     labels = ['Backstage'],
-    links = ['http://backstage.local:7007']
+    links = ['http://localhost:7007']
 )

@@ -178,12 +178,9 @@ costInsights:
       name: Monthly Subscribers
 
 techdocs:
-  sanitizer:
-    allowedIframeHosts:
-      - www.youtube.com
-  builder: "external"
+  builder: "local"
   generator:
-    runIn: "local"
+    runIn: "docker"
   publisher:
     type: "local"
 

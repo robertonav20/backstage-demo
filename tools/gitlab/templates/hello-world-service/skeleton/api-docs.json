@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "http://${{values.component_id | dump }}.local:7080",
+            "url": "http://${{values.component_id}}.local:7080",
             "description": "Kubernetes Server URL"
         }
     ],

@@ -7,10 +7,10 @@
  */
 
 import { createBackend } from '@backstage/backend-defaults';
-import {
-  gitlabPlugin,
-  catalogPluginGitlabFillerProcessorModule,
-} from '@immobiliarelabs/backstage-plugin-gitlab-backend';
+// import {
+//   gitlabPlugin,
+//   catalogPluginGitlabFillerProcessorModule,
+// } from '@immobiliarelabs/backstage-plugin-gitlab-backend';
 
 const backend = createBackend();
 
@@ -59,14 +59,20 @@ backend.add(import('@backstage/plugin-kubernetes-backend/alpha'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 
 // gitlab
-backend.add(import('@backstage/plugin-auth-backend-module-gitlab-provider'));
-backend.add(import('@backstage/plugin-catalog-backend-module-gitlab'));
-backend.add(import('@backstage/plugin-catalog-backend-module-gitlab-org'));
-backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
-backend.add(gitlabPlugin);
-backend.add(catalogPluginGitlabFillerProcessorModule);
+// backend.add(import('@backstage/plugin-auth-backend-module-gitlab-provider'));
+// backend.add(import('@backstage/plugin-catalog-backend-module-gitlab'));
+// backend.add(import('@backstage/plugin-catalog-backend-module-gitlab-org'));
+// backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
+// backend.add(gitlabPlugin);
+// backend.add(catalogPluginGitlabFillerProcessorModule);
 
 // utils
 backend.add(import('@roadiehq/scaffolder-backend-module-utils/new-backend'));
+
+// gitea
+// custom authenticator for gitea
+backend.add(import('plugin-auth-backend-module-gitea-provider'));
+backend.add(import('@backstage/plugin-catalog-backend-module-gitea'));
+
 
 backend.start();

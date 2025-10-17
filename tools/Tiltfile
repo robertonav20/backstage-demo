@@ -1,3 +1,5 @@
+docker_prune_settings ( disable = False , max_age_mins = 360 , num_builds = 0 , interval_hrs = 1 , keep_recent = 2 )
+
 ARGOCD_BASE_URL_KEY = 'ARGOCD_BASE_URL'
 ARGOCD_USER_KEY = 'ARGOCD_USER'
 ARGOCD_PASSWORD_KEY = 'ARGOCD_PASSWORD'
@@ -132,22 +134,33 @@ docker_build(
     build_args = BUILD_ARGS,
 )
 
-docker_compose( configPaths = './docker-compose.yaml')
+if (False):
+    docker_compose( configPaths = './docker-compose-gitlab.yaml', project_name = 'gitlab')
+    dc_resource(name = 'gitlab', labels = ['Services'], links = ['http://gitlab.local'])
+    dc_resource(name = 'gitlab-runner', labels = ['Services'])
+    dc_resource(name = 'postgres', labels = ['Services'])
+    dc_resource(name = 'redis', labels = ['Services'])
+else:
+    local(command='docker compose -f docker-compose-gitlab.yaml stop')
 
-dc_resource(name = 'gitlab', labels = ['Services'], links = ['http://gitlab.local'])
-dc_resource(name = 'gitlab-runner', labels = ['Services'])
-dc_resource(name = 'postgres', labels = ['Services'])
-dc_resource(name = 'redis', labels = ['Services'])
 
-local_resource('startup', 'startup.sh', auto_init = False, labels = ['Kubernetes-ArgoCD'], links = ['https://argocd.local:7443'])
-local_resource('install dependencies', 'yarn install', auto_init = False, labels = ['Backstage'])
+if (True):
+    docker_compose( configPaths = './docker-compose-gitea.yaml', project_name = 'gitea')
+    dc_resource(name = 'server', labels = ['Services'], links = ['http://gitea.local:3000'])
+    dc_resource(name = 'runner', labels = ['Services'])
+    dc_resource(name = 'db', labels = ['Services'])
+else:
+    local(command='docker compose -f docker-compose-gitea.yaml stop')
+
+local_resource('Kubernetes - Startup', 'startup.sh', auto_init = False, labels = ['Kubernetes-ArgoCD'], links = ['https://argocd.local:7443'])
+local_resource('Backate - Install dependencies', 'yarn install', auto_init = False, labels = ['Backstage'])
 local_resource(
     'backstage-app',
     serve_cmd = 'cd ../packages/app/ && backstage-cli package start',
     serve_env = BUILD_ARGS,
     allow_parallel = True,
     labels = ['Backstage'],
-    links = ['http://localhost:3000']
+    links = ['http://localhost:3100']
 )
 local_resource(
     'backstage-backend',

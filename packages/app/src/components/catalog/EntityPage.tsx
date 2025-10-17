@@ -78,45 +78,45 @@ import {
 } from '@roadiehq/backstage-plugin-argo-cd';
 
 
-const gitlabContent = (
-  <Grid container spacing={3} alignItems="stretch">
-    <EntitySwitch>
-      <EntitySwitch.Case if={isGitlabAvailable}>
-        <Grid item md={12}>
-            <EntityGitlabReadmeCard />
-        </Grid>
+// const gitlabContent = (
+//   <Grid container spacing={3} alignItems="stretch">
+//     <EntitySwitch>
+//       <EntitySwitch.Case if={isGitlabAvailable}>
+//         {/* <Grid item md={12}>
+//             <EntityGitlabReadmeCard />
+//         </Grid>
 
-        <Grid item md={6}>
-          <EntityGitlabPeopleCard />
-        </Grid>
-        <Grid item md={6}>
-            <EntityGitlabLanguageCard />
-        </Grid>
+//         <Grid item md={6}>
+//           <EntityGitlabPeopleCard />
+//         </Grid>
+//         <Grid item md={6}>
+//             <EntityGitlabLanguageCard />
+//         </Grid>
 
-        <Grid item md={12}>
-            <EntityGitlabReleasesCard />
-        </Grid>
+//         <Grid item md={12}>
+//             <EntityGitlabReleasesCard />
+//         </Grid>
 
-        <Grid item md={6}>
-          <EntityGitlabCoverageCard />
-        </Grid>
-        <Grid item md={6}>
-          <EntityGitlabMergeRequestStatsCard />
-        </Grid>
+//         <Grid item md={6}>
+//           <EntityGitlabCoverageCard />
+//         </Grid>
+//         <Grid item md={6}>
+//           <EntityGitlabMergeRequestStatsCard />
+//         </Grid>
 
-        <Grid item md={12}>
-            <EntityGitlabPipelinesTable />
-        </Grid>
-        <Grid item md={12}>
-            <EntityGitlabMergeRequestsTable />
-        </Grid>
-        <Grid item md={12}>
-            <EntityGitlabIssuesTable />
-        </Grid>
-      </EntitySwitch.Case>
-    </EntitySwitch>
-  </Grid>
-);
+//         <Grid item md={12}>
+//             <EntityGitlabPipelinesTable />
+//         </Grid>
+//         <Grid item md={12}>
+//             <EntityGitlabMergeRequestsTable />
+//         </Grid>
+//         <Grid item md={12}>
+//             <EntityGitlabIssuesTable />
+//         </Grid> */}
+//       </EntitySwitch.Case>
+//     </EntitySwitch>
+//   </Grid>
+// );
 
 const argoCDContent = (
   <Grid container spacing={3} alignItems="stretch">
@@ -187,16 +187,16 @@ const overviewContent = (
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
 
-    <Grid item md={6}>
+    {/* <Grid item md={6}>
       <EntityGitlabPeopleCard />
     </Grid>
     <Grid item md={6}>
-        <EntityGitlabLanguageCard />
+      <EntityGitlabLanguageCard />
     </Grid>
 
     <Grid item md={12}>
-        <EntityGitlabReleasesCard />
-    </Grid>
+      <EntityGitlabReleasesCard />
+    </Grid> */}
   </Grid>
 );
 
@@ -206,9 +206,9 @@ const serviceEntityPage = (
       {overviewContent}
     </EntityLayout.Route>
 
-    <EntityLayout.Route path="/gitlab" title="Gitlab">
+    {/* <EntityLayout.Route path="/gitlab" title="Gitlab">
       {gitlabContent}
-    </EntityLayout.Route>
+    </EntityLayout.Route> */}
 
     <EntityLayout.Route path="/argocd" title="Argo CD">
       {argoCDContent}
@@ -252,9 +252,9 @@ const websiteEntityPage = (
       {overviewContent}
     </EntityLayout.Route>
 
-    <EntityLayout.Route path="/gitlab" title="Gitlab">
+    {/* <EntityLayout.Route path="/gitlab" title="Gitlab">
       {gitlabContent}
-    </EntityLayout.Route>
+    </EntityLayout.Route> */}
 
     <EntityLayout.Route path="/argocd" title="Argo CD">
       {argoCDContent}

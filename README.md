@@ -4,7 +4,7 @@ Backstage project is available with docker isn't necessary to run locally and in
 
 Here the links
 
-- [Backstage - UI](http://localhost:3000)
+- [Backstage - UI](http://localhost:3100)
 - [Backstage - BE](http://localhost:7007)
 
 ## Useful links

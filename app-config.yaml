@@ -1,6 +1,6 @@
 app:
   title: Backstage Demo
-  baseUrl: http://localhost:3000
+  baseUrl: http://localhost:3100
   experimental:
     # Auto discovering all plugins extensions
     packages: all
@@ -71,7 +71,7 @@ backend:
       ]
     frame-src: ["https://www.youtube.com"]
   cors:
-    origin: http://localhost:3000
+    origin: http://localhost:3100
     methods: [GET, POST, PUT, DELETE]
     credentials: true
   database:
@@ -84,25 +84,36 @@ backend:
           - /api/graphql/schema
 
 integrations:
-  gitlab:
-    - host: ${GITLAB_HOST}
-      token: ${GITLAB_API_KEY}
-      baseUrl: ${GITLAB_URL}
-      apiBaseUrl: ${GITLAB_API_BASE_URL}
+  gitea:
+    - host: gitea.local:3000
+      password: 74d094ad9da85255a08933fa08c2aa1506e078bf
+  # gitlab:
+  #   - host: ${GITLAB_HOST}
+  #     token: ${GITLAB_API_KEY}
+  #     baseUrl: ${GITLAB_URL}
+  #     apiBaseUrl: ${GITLAB_API_BASE_URL}
 
 auth:
   environment: development
   providers:
     guest:
       userEntityRef: user:default/guest
-    gitlab:
+    gitea:
       development:
-        clientId: ${GITLAB_CLIENT_ID}
-        clientSecret: ${GITLAB_CLIENT_SECRET}
-        audience: ${GITLAB_URL}
+        clientId: 1e849141-e336-4298-82a6-7157c8384947
+        clientSecret: gto_rkeja6xpsfoqlwi4cfmnmivaxzuxzxzfgcby47qui2bxdl44v4tq
+        audience: http://gitea.local:3000/
         signIn:
           resolvers:
             - resolver: usernameMatchingUserEntityName
+    # gitlab:
+    #   development:
+    #     clientId: ${GITLAB_CLIENT_ID}
+    #     clientSecret: ${GITLAB_CLIENT_SECRET}
+    #     audience: ${GITLAB_URL}
+    #     signIn:
+    #       resolvers:
+    #         - resolver: usernameMatchingUserEntityName
 
 catalog:
   readonly: false
@@ -131,24 +142,32 @@ catalog:
       target: ./static/groups/backstage-demo.yaml
 
     # Backstage example systems
-    - type: url
-      target: ${GITLAB_URL}/backstage-demo/templates/hello-world-app/-/blob/main/template.yaml
-    - type: url
-      target: ${GITLAB_URL}/backstage-demo/templates/hello-world-service/-/blob/main/template.yaml
+    # - type: url
+    #   target: ${GITLAB_URL}/backstage-demo/templates/hello-world-app/-/blob/main/template.yaml
+    # - type: url
+    #   target: ${GITLAB_URL}/backstage-demo/templates/hello-world-service/-/blob/main/template.yaml
 
   providers:
-    gitlab:
-      gitlab:
-        host: ${GITLAB_HOST}
-        branch: main
-        fallbackBranch: master
-        skipForkedRepos: false
-        # group: backstage-demo
-        orgEnabled: true
-        group: backstage-demo
-        restrictUsersToGroup: false
-        includeUsersWithoutSeat: true
-        excludeRepos: []
+    # gitlab:
+    #   gitlab:
+    #     host: ${GITLAB_HOST}
+    #     branch: main
+    #     fallbackBranch: master
+    #     skipForkedRepos: false
+    #     orgEnabled: true
+    #     group: backstage-demo
+    #     restrictUsersToGroup: false
+    #     includeUsersWithoutSeat: true
+    #     excludeRepos: []
+    #     schedule:
+    #       frequency: { minutes: 5 }
+    #       timeout: { minutes: 3 }
+    gitea:
+      gitea:
+        organization: "backstage-demo"
+        host: gitea.local:3000
+        branch: "main"
+        catalogPath: "catalog-info.yaml"
         schedule:
           frequency: { minutes: 5 }
           timeout: { minutes: 3 }

@@ -39,7 +39,8 @@ import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
-import { gitlabAuthApiRef } from '@backstage/core-plugin-api';
+// import { gitlabAuthApiRef } from '@backstage/core-plugin-api';
+import { giteaAuthApiRef } from './apis';
 import {
   UnifiedThemeProvider
 } from '@backstage/theme';
@@ -73,11 +74,17 @@ const app = createApp({
         providers={[
           'guest',
           {
-            id: 'gitlab-auth-provider',
-            title: 'Gitlab',
-            message: 'Sign in using Gitlab',
-            apiRef: gitlabAuthApiRef,
-          }
+            id: 'gitea-auth-provider',
+            title: 'Gitea',
+            message: 'Sign in using Gitea',
+            apiRef: giteaAuthApiRef,
+          },
+          // {
+          //   id: 'gitlab-auth-provider',
+          //   title: 'Gitlab',
+          //   message: 'Sign in using Gitlab',
+          //   apiRef: gitlabAuthApiRef,
+          // }
       ]}
       />
     ),

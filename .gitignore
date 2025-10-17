@@ -59,3 +59,5 @@ e2e-test-report/
 *.jar
 
 .odo
+
+tools/gitea/data

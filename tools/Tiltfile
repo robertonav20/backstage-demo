@@ -132,7 +132,7 @@ docker_build(
     build_args = BUILD_ARGS,
 )
 
-docker_compose( configPaths = './docker-compose.yaml')
+docker_compose( configPaths = './docker-compose-gitlab.yaml', project_name = 'gitlab')
 
 dc_resource(name = 'gitlab', labels = ['Services'], links = ['http://gitlab.local'])
 dc_resource(name = 'gitlab-runner', labels = ['Services'])

@@ -31,7 +31,7 @@ export const authModuleGiteaProvider = createBackendModule({
       deps: {
         providers: authProvidersExtensionPoint,
       },
-      async init({ providers }) {
+      async init({ providers, logger }) {
         providers.registerProvider({
           providerId: 'gitea',
           factory: createOAuthProviderFactory({

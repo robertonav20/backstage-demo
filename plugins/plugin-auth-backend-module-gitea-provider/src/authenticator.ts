@@ -27,7 +27,7 @@ export const giteaAuthenticator = createOAuthAuthenticator({
     defaultProfileTransform:
         PassportOAuthAuthenticatorHelper.defaultProfileTransform,
     scopes: {
-        required: ['read_user'],
+        required: ['read:user'],
     },
     initialize({ callbackUrl, config }) {
         const clientId = config.getString('clientId');

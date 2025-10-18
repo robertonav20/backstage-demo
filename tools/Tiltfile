@@ -123,18 +123,17 @@ os.putenv(KUBERNETES_CLIENT_CERTIFICATE_DATA_KEY, KUBERNETES_CLIENT_CERTIFICATE_
 os.putenv(KUBERNETES_CLIENT_KEY_DATA_KEY, KUBERNETES_CLIENT_KEY_DATA_VALUE)
 os.putenv('NODE_OPTIONS', '--no-node-snapshot')
 
-docker_build(
-    ref = 'gitlab-image',
-    context = './gitlab',
-    build_args = BUILD_ARGS,
-)
-docker_build(
-    ref = 'gitlab-runner-image',
-    context = './gitlab-runner',
-    build_args = BUILD_ARGS,
-)
-
 if (False):
+    docker_build(
+        ref = 'gitlab-image',
+        context = './gitlab',
+        build_args = BUILD_ARGS,
+    )
+    docker_build(
+        ref = 'gitlab-runner-image',
+        context = './gitlab-runner',
+        build_args = BUILD_ARGS,
+    )
     docker_compose( configPaths = './docker-compose-gitlab.yaml', project_name = 'gitlab')
     dc_resource(name = 'gitlab', labels = ['Services'], links = ['http://gitlab.local'])
     dc_resource(name = 'gitlab-runner', labels = ['Services'])

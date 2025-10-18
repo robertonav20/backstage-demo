@@ -44,7 +44,12 @@ export namespace giteaSignInResolvers {
       ) => {
         const { result } = info;
 
+	ctx.logger.info(`Info object: ${info}`);
+
         const id = result.fullProfile.username;
+
+	ctx.logger.info(`Info object: ${id}`);
+
         if (!id) {
           throw new Error(`Gitea user profile does not contain a username`);
         }

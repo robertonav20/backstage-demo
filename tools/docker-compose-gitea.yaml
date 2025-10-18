@@ -39,13 +39,13 @@ services:
     environment:
       CONFIG_FILE: /config.yaml
       GITEA_INSTANCE_URL: "http://gitea:3000"
-      GITEA_RUNNER_REGISTRATION_TOKEN: "BbnMJJP2LEiwhiaje72wvUwld6EbXhxxNSZFgkgb"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "49xy3Qbm4SGw6XlOicQCZL90fGf1OeFJb0rhrOrY"
       GITEA_RUNNER_NAME: "Gitea Runner"
     networks:
       - gitea
     volumes:
       - ./gitea/config/config.yaml:/config.yaml
-      - ./gitea/data/runner:/data
+      #- ./gitea/data/runner:/data
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - server

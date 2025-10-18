@@ -86,7 +86,10 @@ backend:
 integrations:
   gitea:
     - host: gitea.local:3000
-      password: 74d094ad9da85255a08933fa08c2aa1506e078bf
+      username: backstage-demo
+      password: backstage-demo
+      #password: 74d094ad9da85255a08933fa08c2aa1506e078bf
+      baseUrl: http://gitea.local:3000
   # gitlab:
   #   - host: ${GITLAB_HOST}
   #     token: ${GITLAB_API_KEY}
@@ -143,10 +146,10 @@ catalog:
       target: ./static/groups/backstage-demo.yaml
 
     # Backstage example systems
-    # - type: url
-    #   target: ${GITLAB_URL}/backstage-demo/templates/hello-world-app/-/blob/main/template.yaml
-    # - type: url
-    #   target: ${GITLAB_URL}/backstage-demo/templates/hello-world-service/-/blob/main/template.yaml
+    - type: url
+      target: http://gitea.local:3000/backstage-demo/template-hello-world-app/src/branch/master/template.yaml
+    - type: url
+      target: http://gitea.local:3000/backstage-demo/template-hello-world-service/src/branch/master/template.yaml
 
   providers:
     # gitlab:

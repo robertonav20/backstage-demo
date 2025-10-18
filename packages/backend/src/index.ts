@@ -73,6 +73,7 @@ backend.add(import('@roadiehq/scaffolder-backend-module-utils/new-backend'));
 // custom authenticator for gitea
 backend.add(import('plugin-auth-backend-module-gitea-provider'));
 backend.add(import('@backstage/plugin-catalog-backend-module-gitea'));
+backend.add(import('@backstage/plugin-scaffolder-backend-module-gitea'));
 
 
 backend.start();
